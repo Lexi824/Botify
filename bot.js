@@ -2921,14 +2921,8 @@ client.on(Events.MessageCreate, async (message) => {
       await message.reply("AI chat history reset.");
       return;
     }
-
-    if (!content.startsWith("!")) {
-      return;
-    }
-
-    const aiInput = content.slice(1).trim();
+    const aiInput = content.startsWith("!") ? content.slice(1).trim() : content;
     if (!aiInput) {
-      await message.reply("Schreibe mir in den DMs mit `!deine nachricht`.\n\nScript by Verk");
       return;
     }
 
