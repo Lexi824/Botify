@@ -1,0 +1,17 @@
+{
+  "name": "botify",
+  "version": "1.0.0",
+  "description": "Botify Discord bot with slash commands, giveaways, roles, tickets, and tokens.",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "discord.js": "^14.25.1",
+    "dotenv": "^17.3.1"
+  }
+}
