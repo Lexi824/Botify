@@ -49,6 +49,7 @@ const QUEUES_FILE = path.join(DATA_DIR, "queues.json");
 const SHOP_FILE = path.join(DATA_DIR, "shop-items.json");
 const BACKUPS_FILE = path.join(DATA_DIR, "backups.json");
 const AI_DMS_FILE = path.join(DATA_DIR, "ai-dms.json");
+const MY_ROLES_FILE = path.join(DATA_DIR, "my-roles.json");
 
 const TICKET_TYPES = {
   claim: {
@@ -232,6 +233,10 @@ function ensureDataFiles() {
   if (!fs.existsSync(AI_DMS_FILE)) {
     fs.writeFileSync(AI_DMS_FILE, JSON.stringify({}, null, 2));
   }
+
+  if (!fs.existsSync(MY_ROLES_FILE)) {
+    fs.writeFileSync(MY_ROLES_FILE, JSON.stringify({}, null, 2));
+  }
 }
 
 function readJson(filePath, fallback) {
@@ -264,6 +269,65 @@ function clearAiDmConversation(userId) {
     delete next[userId];
     return next;
   });
+}
+
+function getMyRoleStore() {
+  return readJson(MY_ROLES_FILE, {});
+}
+
+function updateMyRoleStore(updater) {
+  const current = getMyRoleStore();
+  const next = updater(current);
+  writeJson(MY_ROLES_FILE, next);
+  return next;
+}
+
+function getGuildMyRole(guildId, userId) {
+  const store = getMyRoleStore();
+  return store[guildId]?.[userId] || null;
+}
+
+function setGuildMyRole(guildId, userId, roleId) {
+  updateMyRoleStore((current) => ({
+    ...current,
+    [guildId]: {
+      ...(current[guildId] || {}),
+      [userId]: roleId,
+    },
+  }));
+}
+
+function removeGuildMyRole(guildId, userId) {
+  updateMyRoleStore((current) => {
+    const next = { ...current };
+    if (!next[guildId]) {
+      return next;
+    }
+
+    const nextGuild = { ...next[guildId] };
+    delete nextGuild[userId];
+
+    if (Object.keys(nextGuild).length) {
+      next[guildId] = nextGuild;
+    } else {
+      delete next[guildId];
+    }
+
+    return next;
+  });
+}
+
+function parseHexColor(input) {
+  if (!input) {
+    return null;
+  }
+
+  const normalized = input.trim().replace(/^#/, "");
+  if (!/^[0-9a-fA-F]{6}$/.test(normalized)) {
+    return null;
+  }
+
+  return parseInt(normalized, 16);
 }
 
 function formatAiDmReply(reply) {
@@ -1794,7 +1858,7 @@ function buildHelpEmbed(prefix) {
         `\`${prefix}panel\` / \`/panel\` / \`/ticket\``,
         `\`${prefix}queuepanel\` / \`/queuepanel\``,
         `\`/backup create\` / \`/backup use\` / \`/backup list\``,
-        `\`/server list\` / \`/server info\` / \`/server roleinfo\` / \`/server setup\` / \`/server leave\``,
+        `\`/server list\` / \`/server info\` / \`/server roleinfo\` / \`/server setup\` / \`/server lock\` / \`/server leave\``,
         `\`${prefix}rolepanel\` / \`/rolepanel send\``,
         `\`${prefix}shop\` / \`/shop\``,
         `\`${prefix}shoppanel\` / \`/shoppanel\``,
@@ -1802,6 +1866,7 @@ function buildHelpEmbed(prefix) {
         `\`${prefix}roleme @role\` / \`/roleme\``,
         `\`${prefix}tokens [@user]\` / \`/tokens\``,
         `\`${prefix}pay @user <amount>\` / \`/pay\``,
+        `\`/myrole create\` / \`/myrole delete\``,
         `\`/mute\``,
         `\`/lock\``,
         "",
@@ -1824,7 +1889,7 @@ function buildHelpEmbed(prefix) {
         `\`${prefix}setsupportrole @role\` / \`/setsupportrole\``,
         `\`${prefix}setticketcategory <category>\` / \`/setticketcategory\``,
         `\`${prefix}setprefix <prefix>\` / \`/setprefix\``,
-        `\`/rolepanel addrole\` / \`/rolepanel removerole\` / \`/rolepanel list\``,
+        `\`/rolepanel setup\` / \`/rolepanel addrole\` / \`/rolepanel removerole\` / \`/rolepanel list\``,
         `\`/setup\``,
         `\`${prefix}delete confirm\` / \`/delete\``,
         `\`${prefix}addselfrole @role\` / \`/addselfrole\``,
@@ -1936,6 +2001,24 @@ async function registerSlashCommands(readyClient) {
     )
     .addSubcommand((subcommand) =>
       subcommand
+        .setName("lock")
+        .setDescription("Lock a server so everyone can no longer send messages.")
+        .addStringOption((option) =>
+          option
+            .setName("server")
+            .setDescription("Choose the server")
+            .setRequired(true)
+            .setAutocomplete(true)
+        )
+        .addBooleanOption((option) =>
+          option
+            .setName("all")
+            .setDescription("Also lock voice and stage channels")
+            .setRequired(false)
+        )
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
         .setName("info")
         .setDescription("Show info about one server the bot is in.")
         .addStringOption((option) =>
@@ -2021,6 +2104,26 @@ async function registerSlashCommands(readyClient) {
       )
       .addSubcommand((subcommand) =>
         subcommand.setName("list").setDescription("List all roles currently in the role panel.")
+      )
+      .addSubcommand((subcommand) =>
+        subcommand
+          .setName("setup")
+          .setDescription("Set up the role panel with up to five selected server roles.")
+          .addRoleOption((option) =>
+            option.setName("role1").setDescription("First role").setRequired(true)
+          )
+          .addRoleOption((option) =>
+            option.setName("role2").setDescription("Second role").setRequired(false)
+          )
+          .addRoleOption((option) =>
+            option.setName("role3").setDescription("Third role").setRequired(false)
+          )
+          .addRoleOption((option) =>
+            option.setName("role4").setDescription("Fourth role").setRequired(false)
+          )
+          .addRoleOption((option) =>
+            option.setName("role5").setDescription("Fifth role").setRequired(false)
+          )
       )
       .toJSON(),
     new SlashCommandBuilder()
@@ -2243,6 +2346,24 @@ async function registerSlashCommands(readyClient) {
     new SlashCommandBuilder()
       .setName("config")
       .setDescription("Show the current server configuration.")
+      .toJSON(),
+    new SlashCommandBuilder()
+      .setName("myrole")
+      .setDescription("Create or delete your own personal role.")
+      .addSubcommand((subcommand) =>
+        subcommand
+          .setName("create")
+          .setDescription("Create your own personal role.")
+          .addStringOption((option) =>
+            option.setName("name").setDescription("Role name").setRequired(true)
+          )
+          .addStringOption((option) =>
+            option.setName("color").setDescription("Hex color like #ff8800").setRequired(false)
+          )
+      )
+      .addSubcommand((subcommand) =>
+        subcommand.setName("delete").setDescription("Delete your personal role.")
+      )
       .toJSON(),
     new SlashCommandBuilder()
       .setName("to")
@@ -3525,6 +3646,27 @@ client.on(Events.InteractionCreate, async (interaction) => {
       return;
     }
 
+    if (subcommand === "setup") {
+      const selectedRoles = ["role1", "role2", "role3", "role4", "role5"]
+        .map((optionName) => interaction.options.getRole(optionName))
+        .filter(Boolean);
+
+      const uniqueRoles = Array.from(new Map(selectedRoles.map((role) => [role.id, role])).values());
+
+      updateGuildConfig(interaction.guild.id, (current) => ({
+        ...current,
+        selfAssignableRoleIds: uniqueRoles.map((role) => role.id),
+      }));
+
+      await interaction.reply({
+        content: `Role panel setup saved with ${uniqueRoles.length} role(s): ${uniqueRoles
+          .map((role) => `**${role.name}**`)
+          .join(", ")}`,
+        flags: 64,
+      });
+      return;
+    }
+
     const role = interaction.options.getRole("role");
 
     if (subcommand === "addrole") {
@@ -3648,6 +3790,87 @@ client.on(Events.InteractionCreate, async (interaction) => {
     const guildConfig = getGuildConfig(interaction.guild.id);
     await interaction.reply({
       embeds: [buildConfigEmbed(guildConfig.prefix, guildConfig, interaction.guild)],
+      flags: 64,
+    });
+    return;
+  }
+
+  if (interaction.isChatInputCommand() && interaction.commandName === "myrole") {
+    const subcommand = interaction.options.getSubcommand();
+
+    if (subcommand === "create") {
+      const existingRoleId = getGuildMyRole(interaction.guild.id, interaction.user.id);
+      const existingRole = existingRoleId ? interaction.guild.roles.cache.get(existingRoleId) : null;
+
+      if (existingRole) {
+        await interaction.reply({
+          content: `You already have a personal role: <@&${existingRole.id}>`,
+          flags: 64,
+        });
+        return;
+      }
+
+      const roleName = interaction.options.getString("name").trim();
+      const colorInput = interaction.options.getString("color");
+      const colorValue = parseHexColor(colorInput);
+
+      if (colorInput && colorValue === null) {
+        await interaction.reply({
+          content: "Invalid color. Use a hex color like `#ff8800`.",
+          flags: 64,
+        });
+        return;
+      }
+
+      const botMember = interaction.guild.members.me;
+      if (!botMember?.permissions.has(PermissionsBitField.Flags.ManageRoles)) {
+        await interaction.reply({
+          content: "I need Manage Roles permission to create personal roles.",
+          flags: 64,
+        });
+        return;
+      }
+
+      const role = await interaction.guild.roles.create({
+        name: roleName.slice(0, 100),
+        color: colorValue || undefined,
+        mentionable: false,
+        hoist: false,
+        permissions: [],
+        reason: `Personal role for ${interaction.user.tag}`,
+      });
+
+      await interaction.member.roles.add(role, "Assigned personal role");
+      setGuildMyRole(interaction.guild.id, interaction.user.id, role.id);
+
+      await interaction.reply({
+        content: `Your personal role ${role} has been created and assigned to you.`,
+        flags: 64,
+      });
+      return;
+    }
+
+    const existingRoleId = getGuildMyRole(interaction.guild.id, interaction.user.id);
+    const existingRole = existingRoleId ? interaction.guild.roles.cache.get(existingRoleId) : null;
+
+    if (!existingRole) {
+      removeGuildMyRole(interaction.guild.id, interaction.user.id);
+      await interaction.reply({
+        content: "You do not have a personal role to delete.",
+        flags: 64,
+      });
+      return;
+    }
+
+    if (interaction.member.roles.cache.has(existingRole.id)) {
+      await interaction.member.roles.remove(existingRole, "Removed personal role");
+    }
+
+    await existingRole.delete("Deleted personal role").catch(() => null);
+    removeGuildMyRole(interaction.guild.id, interaction.user.id);
+
+    await interaction.reply({
+      content: "Your personal role has been deleted.",
       flags: 64,
     });
     return;
@@ -3858,6 +4081,67 @@ client.on(Events.InteractionCreate, async (interaction) => {
         ]
           .filter(Boolean)
           .join("\n"),
+        flags: 64,
+      });
+      return;
+    }
+
+    if (subcommand === "lock") {
+      const guildId = interaction.options.getString("server");
+      const lockAll = interaction.options.getBoolean("all") || false;
+      const targetGuild = client.guilds.cache.get(guildId);
+
+      if (!targetGuild) {
+        await interaction.reply({
+          content: "I could not find that server.",
+          flags: 64,
+        });
+        return;
+      }
+
+      await interaction.reply({
+        content: `Locking **${targetGuild.name}**...`,
+        flags: 64,
+      });
+
+      let updatedTextChannels = 0;
+      let updatedVoiceChannels = 0;
+      for (const channel of targetGuild.channels.cache.values()) {
+        if (
+          channel.type === ChannelType.GuildText ||
+          channel.type === ChannelType.GuildAnnouncement
+        ) {
+          await channel.permissionOverwrites
+            .edit(targetGuild.roles.everyone, {
+              SendMessages: false,
+              SendMessagesInThreads: false,
+              CreatePublicThreads: false,
+              CreatePrivateThreads: false,
+            })
+            .catch(() => null);
+          updatedTextChannels += 1;
+        }
+
+        if (
+          lockAll &&
+          (channel.type === ChannelType.GuildVoice || channel.type === ChannelType.GuildStageVoice)
+        ) {
+          await channel.permissionOverwrites
+            .edit(targetGuild.roles.everyone, {
+              Connect: false,
+              Speak: false,
+              Stream: false,
+              UseEmbeddedActivities: false,
+            })
+            .catch(() => null);
+          updatedVoiceChannels += 1;
+        }
+      }
+
+      await interaction.followUp({
+        content: lockAll
+          ? `Locked **${targetGuild.name}**. Updated **${updatedTextChannels}** text channel(s) and **${updatedVoiceChannels}** voice/stage channel(s).`
+          : `Locked **${targetGuild.name}**. Updated **${updatedTextChannels}** text channel(s).`,
         flags: 64,
       });
       return;
