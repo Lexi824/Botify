@@ -114,8 +114,4 @@ npm.cmd start
 
 ## Storage
 
-- Guild config is stored in [guild-configs.json](C:\Users\areic\OneDrive - BG BRG Kufstein\Dokumente\Discord Ticket bot\data\guild-configs.json)
-- Token data is stored in [tokens.json](C:\Users\areic\OneDrive - BG BRG Kufstein\Dokumente\Discord Ticket bot\data\tokens.json)
-- Active giveaways are stored in [giveaways.json](C:\Users\areic\OneDrive - BG BRG Kufstein\Dokumente\Discord Ticket bot\data\giveaways.json)
-- Shop items are stored in [shop-items.json](C:\Users\areic\OneDrive - BG BRG Kufstein\Dokumente\Discord Ticket bot\data\shop-items.json)
-- Main bot logic is in [bot.js](C:\Users\areic\OneDrive - BG BRG Kufstein\Dokumente\Discord Ticket bot\bot.js)
+- RTX 4080 High End PC used for this
