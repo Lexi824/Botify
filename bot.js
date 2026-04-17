@@ -1891,7 +1891,7 @@ function buildHelpEmbed(prefix) {
         `\`${prefix}setprefix <prefix>\` / \`/setprefix\``,
         `\`/rolepanel setup\` / \`/rolepanel addrole\` / \`/rolepanel removerole\` / \`/rolepanel list\``,
         `\`/setup\``,
-        `\`${prefix}delete confirm\` / \`/delete\``,
+        `\`${prefix}delete confirm\` / \`/delete all\` / \`/delete channel\``,
         `\`${prefix}addselfrole @role\` / \`/addselfrole\``,
         `\`${prefix}removeselfrole @role\` / \`/removeselfrole\``,
         `\`${prefix}addshopitem @role <price>\` / \`/addshopitem\``,
@@ -2021,6 +2021,54 @@ async function registerSlashCommands(readyClient) {
       subcommand
         .setName("info")
         .setDescription("Show info about one server the bot is in.")
+        .addStringOption((option) =>
+          option
+            .setName("server")
+            .setDescription("Choose the server")
+            .setRequired(true)
+            .setAutocomplete(true)
+        )
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("channels")
+        .setDescription("Show channels of one server the bot is in.")
+        .addStringOption((option) =>
+          option
+            .setName("server")
+            .setDescription("Choose the server")
+            .setRequired(true)
+            .setAutocomplete(true)
+        )
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("categories")
+        .setDescription("Show categories of one server the bot is in.")
+        .addStringOption((option) =>
+          option
+            .setName("server")
+            .setDescription("Choose the server")
+            .setRequired(true)
+            .setAutocomplete(true)
+        )
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("config")
+        .setDescription("Show the saved Botify config for one server.")
+        .addStringOption((option) =>
+          option
+            .setName("server")
+            .setDescription("Choose the server")
+            .setRequired(true)
+            .setAutocomplete(true)
+        )
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("selfroles")
+        .setDescription("Show the configured self-roles for one server.")
         .addStringOption((option) =>
           option
             .setName("server")
@@ -2304,12 +2352,25 @@ async function registerSlashCommands(readyClient) {
       .toJSON(),
     new SlashCommandBuilder()
       .setName("delete")
-      .setDescription("Delete all channels in this server.")
-      .addBooleanOption((option) =>
-        option
-          .setName("confirm")
-          .setDescription("Must be true to continue")
-          .setRequired(true)
+      .setDescription("Delete channels in this server.")
+      .addSubcommand((subcommand) =>
+        subcommand
+          .setName("all")
+          .setDescription("Delete all channels in this server.")
+          .addBooleanOption((option) =>
+            option
+              .setName("confirm")
+              .setDescription("Must be true to continue")
+              .setRequired(true)
+          )
+      )
+      .addSubcommand((subcommand) =>
+        subcommand
+          .setName("channel")
+          .setDescription("Delete one specific channel.")
+          .addChannelOption((option) =>
+            option.setName("channel").setDescription("The channel to delete").setRequired(true)
+          )
       )
       .toJSON(),
     new SlashCommandBuilder()
@@ -4200,6 +4261,214 @@ client.on(Events.InteractionCreate, async (interaction) => {
       return;
     }
 
+    if (subcommand === "channels") {
+      const guildId = interaction.options.getString("server");
+      const targetGuild = client.guilds.cache.get(guildId);
+
+      if (!targetGuild) {
+        await interaction.reply({
+          content: "I could not find that server.",
+          flags: 64,
+        });
+        return;
+      }
+
+      const channelLines = targetGuild.channels.cache
+        .sort((a, b) => a.rawPosition - b.rawPosition)
+        .map((channel) => {
+          const typeLabel =
+            channel.type === ChannelType.GuildCategory
+              ? "Category"
+              : channel.type === ChannelType.GuildText
+                ? "Text"
+                : channel.type === ChannelType.GuildAnnouncement
+                  ? "Announcement"
+                  : channel.type === ChannelType.GuildVoice
+                    ? "Voice"
+                    : channel.type === ChannelType.GuildStageVoice
+                      ? "Stage"
+                      : channel.type === ChannelType.GuildForum
+                        ? "Forum"
+                        : "Other";
+
+          return `• **${channel.name}** - ${typeLabel}`;
+        });
+
+      const chunks = [];
+      let currentChunk = "";
+
+      for (const line of channelLines) {
+        const nextValue = currentChunk ? `${currentChunk}\n${line}` : line;
+        if (nextValue.length > 3800) {
+          chunks.push(currentChunk);
+          currentChunk = line;
+        } else {
+          currentChunk = nextValue;
+        }
+      }
+
+      if (currentChunk) {
+        chunks.push(currentChunk);
+      }
+
+      if (!chunks.length) {
+        chunks.push("This server has no channels.");
+      }
+
+      await interaction.reply({
+        embeds: [
+          new EmbedBuilder()
+            .setColor(0x5865f2)
+            .setTitle(`${targetGuild.name} Channels`)
+            .setDescription(chunks[0])
+            .setFooter({ text: `Botify Server Channels • ${channelLines.length} channel(s)` }),
+        ],
+        flags: 64,
+      });
+
+      for (let index = 1; index < chunks.length; index += 1) {
+        await interaction.followUp({
+          embeds: [
+            new EmbedBuilder()
+              .setColor(0x5865f2)
+              .setTitle(`${targetGuild.name} Channels (cont.)`)
+              .setDescription(chunks[index]),
+          ],
+          flags: 64,
+        });
+      }
+      return;
+    }
+
+    if (subcommand === "categories") {
+      const guildId = interaction.options.getString("server");
+      const targetGuild = client.guilds.cache.get(guildId);
+
+      if (!targetGuild) {
+        await interaction.reply({
+          content: "I could not find that server.",
+          flags: 64,
+        });
+        return;
+      }
+
+      const categoryLines = targetGuild.channels.cache
+        .filter((channel) => channel.type === ChannelType.GuildCategory)
+        .sort((a, b) => a.rawPosition - b.rawPosition)
+        .map((category) => {
+          const children = targetGuild.channels.cache.filter((channel) => channel.parentId === category.id).size;
+          return `• **${category.name}** - ${children} child channel(s)`;
+        });
+
+      await interaction.reply({
+        embeds: [
+          new EmbedBuilder()
+            .setColor(0x5865f2)
+            .setTitle(`${targetGuild.name} Categories`)
+            .setDescription(categoryLines.join("\n") || "This server has no categories.")
+            .setFooter({ text: `Botify Categories • ${categoryLines.length} categor${categoryLines.length === 1 ? "y" : "ies"}` }),
+        ],
+        flags: 64,
+      });
+      return;
+    }
+
+    if (subcommand === "config") {
+      const guildId = interaction.options.getString("server");
+      const targetGuild = client.guilds.cache.get(guildId);
+
+      if (!targetGuild) {
+        await interaction.reply({
+          content: "I could not find that server.",
+          flags: 64,
+        });
+        return;
+      }
+
+      const guildConfig = getGuildConfig(guildId);
+      const panelChannel = guildConfig.ticketPanelChannelId
+        ? targetGuild.channels.cache.get(guildConfig.ticketPanelChannelId)
+        : null;
+      const ticketCategory = guildConfig.ticketCategoryId
+        ? targetGuild.channels.cache.get(guildConfig.ticketCategoryId)
+        : null;
+      const supportRole = guildConfig.supportRoleId
+        ? targetGuild.roles.cache.get(guildConfig.supportRoleId)
+        : null;
+      const welcomeChannel = guildConfig.welcomeChannelId
+        ? targetGuild.channels.cache.get(guildConfig.welcomeChannelId)
+        : null;
+      const goodbyeChannel = guildConfig.goodbyeChannelId
+        ? targetGuild.channels.cache.get(guildConfig.goodbyeChannelId)
+        : null;
+
+      await interaction.reply({
+        embeds: [
+          new EmbedBuilder()
+            .setColor(0x5865f2)
+            .setTitle(`${targetGuild.name} Botify Config`)
+            .addFields(
+              { name: "Prefix", value: `\`${guildConfig.prefix || DEFAULT_PREFIX}\``, inline: true },
+              { name: "Support Role", value: supportRole ? `@${supportRole.name}` : "Not set", inline: true },
+              { name: "Ticket Category", value: ticketCategory ? `#${ticketCategory.name}` : "Not set", inline: true },
+              { name: "Ticket Panel", value: panelChannel ? `#${panelChannel.name}` : "Not set", inline: true },
+              { name: "Welcome Channel", value: welcomeChannel ? `#${welcomeChannel.name}` : "Not set", inline: true },
+              { name: "Goodbye Channel", value: goodbyeChannel ? `#${goodbyeChannel.name}` : "Not set", inline: true },
+              {
+                name: "Panel Image",
+                value: guildConfig.panelImageUrl || "Not set",
+                inline: false,
+              },
+              {
+                name: "Secure Mode",
+                value: guildConfig.secureMode ? "Enabled" : "Disabled",
+                inline: true,
+              },
+              {
+                name: "Self-Roles",
+                value: `${(guildConfig.selfAssignableRoleIds || []).length}`,
+                inline: true,
+              }
+            )
+            .setFooter({ text: "Botify Server Config" }),
+        ],
+        flags: 64,
+      });
+      return;
+    }
+
+    if (subcommand === "selfroles") {
+      const guildId = interaction.options.getString("server");
+      const targetGuild = client.guilds.cache.get(guildId);
+
+      if (!targetGuild) {
+        await interaction.reply({
+          content: "I could not find that server.",
+          flags: 64,
+        });
+        return;
+      }
+
+      const guildConfig = getGuildConfig(guildId);
+      const selfRoleIds = guildConfig.selfAssignableRoleIds || [];
+      const lines = selfRoleIds.map((roleId) => {
+        const role = targetGuild.roles.cache.get(roleId);
+        return role ? `• @${role.name} (\`${role.id}\`)` : `• Unknown role (\`${roleId}\`)`;
+      });
+
+      await interaction.reply({
+        embeds: [
+          new EmbedBuilder()
+            .setColor(0x5865f2)
+            .setTitle(`${targetGuild.name} Self-Roles`)
+            .setDescription(lines.join("\n") || "No self-roles are configured on this server.")
+            .setFooter({ text: `Botify Self-Roles • ${selfRoleIds.length} role(s)` }),
+        ],
+        flags: 64,
+      });
+      return;
+    }
+
     if (subcommand === "leave") {
       const guildId = interaction.options.getString("server");
       const targetGuild = client.guilds.cache.get(guildId);
@@ -4308,6 +4577,28 @@ client.on(Events.InteractionCreate, async (interaction) => {
         content: "You need Administrator or Manage Server to do that.",
         flags: 64,
       });
+      return;
+    }
+
+    const subcommand = interaction.options.getSubcommand();
+
+    if (subcommand === "channel") {
+      const channel = interaction.options.getChannel("channel", true);
+
+      if (!channel.guild || channel.guild.id !== interaction.guild.id) {
+        await interaction.reply({
+          content: "Please choose a channel from this server.",
+          flags: 64,
+        });
+        return;
+      }
+
+      await interaction.reply({
+        content: `Deleting channel **${channel.name}**...`,
+        flags: 64,
+      });
+
+      await channel.delete(`Deleted by ${interaction.user.tag} using /delete channel`);
       return;
     }
 
