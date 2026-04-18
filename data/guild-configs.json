@@ -1,0 +1,126 @@
+{
+  "1480213203324502090": {
+    "prefix": "Green",
+    "supportRoleId": "1491157451318497361",
+    "ticketCategoryId": "1491157478455377950",
+    "ticketPanelChannelId": "1491157479500021901",
+    "welcomeChannelId": "1491157456573956167",
+    "goodbyeChannelId": "1491157457693577326",
+    "selfAssignableRoleIds": [
+      "1489331081575534824",
+      "1491157536445960214",
+      "1491157539587493908",
+      "1491157541705617581",
+      "1491157551784529962",
+      "1491157554321948712"
+    ],
+    "giveawayHostRoleId": "",
+    "panelImageUrl": "",
+    "secureMode": false,
+    "secureSnapshot": null
+  },
+  "1490285626073940080": {
+    "prefix": "!",
+    "supportRoleId": "",
+    "ticketCategoryId": "1490290119951913061",
+    "ticketPanelChannelId": "1490290121860317225",
+    "selfAssignableRoleIds": [
+      "1490290170329567403",
+      "1490290172838023348",
+      "1490290175899865189",
+      "1490290178777022597",
+      "1490290181339746384"
+    ],
+    "giveawayHostRoleId": "",
+    "panelImageUrl": ""
+  },
+  "1490291937360482315": {
+    "prefix": "!",
+    "supportRoleId": "1490293608954331138",
+    "ticketCategoryId": "1490293629820997765",
+    "ticketPanelChannelId": "1490320787251658782",
+    "welcomeChannelId": "1490320763641925684",
+    "goodbyeChannelId": "1490320765621370971",
+    "selfAssignableRoleIds": [
+      "1490293679942926367",
+      "1490293682601988161",
+      "1490293685454114858",
+      "1490293688360898690",
+      "1490293690436943923"
+    ],
+    "giveawayHostRoleId": "",
+    "panelImageUrl": ""
+  },
+  "1490320983578640515": {
+    "prefix": "!",
+    "supportRoleId": "1490321211345993900",
+    "ticketCategoryId": "1490321241209311362",
+    "ticketPanelChannelId": "1490321249283473469",
+    "welcomeChannelId": "1490321216840531999",
+    "goodbyeChannelId": "1490321218497413221",
+    "selfAssignableRoleIds": [
+      "1490321293558677571",
+      "1490321296469524490",
+      "1490321298466013254",
+      "1490321300722421912",
+      "1490321303750709308"
+    ],
+    "giveawayHostRoleId": "",
+    "panelImageUrl": ""
+  },
+  "1490014845775515830": {
+    "prefix": "!",
+    "supportRoleId": "1490322357556875274",
+    "ticketCategoryId": "1490322386531254395",
+    "ticketPanelChannelId": "1490322388120895540",
+    "welcomeChannelId": "1490322362225135767",
+    "goodbyeChannelId": "1490322363986739212",
+    "selfAssignableRoleIds": [
+      "1490322437190062132",
+      "1490322439572557934",
+      "1490322441908650095",
+      "1490080441770967160",
+      "1490085795556495592",
+      "1490084726856220752",
+      "1490085863420334080"
+    ],
+    "giveawayHostRoleId": "",
+    "panelImageUrl": ""
+  },
+  "1490416479538118916": {
+    "prefix": "!",
+    "supportRoleId": "1490417441933754680",
+    "ticketCategoryId": "1490417466109853786",
+    "ticketPanelChannelId": "1490417467460157490",
+    "welcomeChannelId": "1490417447306793100",
+    "goodbyeChannelId": "1490417448606761081",
+    "selfAssignableRoleIds": [
+      "1490417522527309977",
+      "1490417525639352440",
+      "1490417529330602014",
+      "1490417531964625049",
+      "1490417534208573661"
+    ],
+    "giveawayHostRoleId": "",
+    "panelImageUrl": ""
+  },
+  "1483099775778685113": {
+    "prefix": "!",
+    "supportRoleId": "1491146680886890497",
+    "ticketCategoryId": "1491152520712814712",
+    "ticketPanelChannelId": "1491152521996144771",
+    "welcomeChannelId": "1491152497325379725",
+    "goodbyeChannelId": "1491152498445127872",
+    "selfAssignableRoleIds": [
+      "1491146676361232456",
+      "1491146674880647360",
+      "1491146672560931018",
+      "1491146670744932383",
+      "1491146669545226372"
+    ],
+    "giveawayHostRoleId": "",
+    "panelImageUrl": "",
+    "secureMode": false,
+    "secureSnapshot": null
+  }
+}

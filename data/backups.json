@@ -1,0 +1,2186 @@
+{
+  "lexi": {
+    "guildName": "Solo Traders",
+    "createdAt": "2026-04-06T19:14:47.271Z",
+    "roles": [
+      {
+        "name": "Memberrrr",
+        "color": 1752220,
+        "hoist": false,
+        "mentionable": false,
+        "permissions": "2108854712139767"
+      },
+      {
+        "name": "Prvt 5 owner",
+        "color": 13161692,
+        "hoist": false,
+        "mentionable": false,
+        "permissions": "0"
+      },
+      {
+        "name": "Stage",
+        "color": 14869991,
+        "hoist": false,
+        "mentionable": false,
+        "permissions": "3211520"
+      },
+      {
+        "name": "Administrator",
+        "color": 1184531,
+        "hoist": false,
+        "mentionable": false,
+        "permissions": "7390075348579346"
+      },
+      {
+        "name": "Prvt 3 Owner",
+        "color": 0,
+        "hoist": false,
+        "mentionable": false,
+        "permissions": "1720707884371521"
+      },
+      {
+        "name": "Famous",
+        "color": 10382335,
+        "hoist": false,
+        "mentionable": false,
+        "permissions": "0"
+      },
+      {
+        "name": "Prvt 3 Owner",
+        "color": 2696241,
+        "hoist": true,
+        "mentionable": true,
+        "permissions": "0"
+      },
+      {
+        "name": "Prvt 1 Owner",
+        "color": 0,
+        "hoist": false,
+        "mentionable": false,
+        "permissions": "1721807559716807"
+      },
+      {
+        "name": "Founder",
+        "color": 921359,
+        "hoist": true,
+        "mentionable": false,
+        "permissions": "8"
+      },
+      {
+        "name": "Big Supporter",
+        "color": 13927485,
+        "hoist": false,
+        "mentionable": false,
+        "permissions": "0"
+      },
+      {
+        "name": "Homie",
+        "color": 0,
+        "hoist": false,
+        "mentionable": false,
+        "permissions": "0"
+      },
+      {
+        "name": "Homie",
+        "color": 3066993,
+        "hoist": true,
+        "mentionable": false,
+        "permissions": "1720707884371521"
+      },
+      {
+        "name": "Prvt 5",
+        "color": 0,
+        "hoist": false,
+        "mentionable": true,
+        "permissions": "2222085186637377"
+      },
+      {
+        "name": "Prvt 4",
+        "color": 0,
+        "hoist": false,
+        "mentionable": true,
+        "permissions": "2222085186637377"
+      },
+      {
+        "name": "Prvt 3",
+        "color": 0,
+        "hoist": false,
+        "mentionable": true,
+        "permissions": "2222085186637377"
+      },
+      {
+        "name": "Prvt 2",
+        "color": 0,
+        "hoist": false,
+        "mentionable": true,
+        "permissions": "2222085186637377"
+      },
+      {
+        "name": "Prvt 1",
+        "color": 0,
+        "hoist": false,
+        "mentionable": true,
+        "permissions": "2222085186637377"
+      },
+      {
+        "name": "Mini Wave Headmod",
+        "color": 11127295,
+        "hoist": true,
+        "mentionable": true,
+        "permissions": "140741823169280"
+      },
+      {
+        "name": "Mini Wave Mod",
+        "color": 8886702,
+        "hoist": true,
+        "mentionable": true,
+        "permissions": "140737488355328"
+      },
+      {
+        "name": "Support Team",
+        "color": 0,
+        "hoist": false,
+        "mentionable": true,
+        "permissions": "2222085186637377"
+      },
+      {
+        "name": "Head Moderator",
+        "color": 526601,
+        "hoist": false,
+        "mentionable": true,
+        "permissions": "2223184698265153"
+      },
+      {
+        "name": "Admin",
+        "color": 0,
+        "hoist": false,
+        "mentionable": true,
+        "permissions": "2222085186637377"
+      },
+      {
+        "name": "Staff",
+        "color": 9807270,
+        "hoist": false,
+        "mentionable": false,
+        "permissions": "2323268069490752"
+      },
+      {
+        "name": "Supporter",
+        "color": 13927485,
+        "hoist": false,
+        "mentionable": false,
+        "permissions": "0"
+      },
+      {
+        "name": "Friend",
+        "color": 7595520,
+        "hoist": false,
+        "mentionable": false,
+        "permissions": "0"
+      },
+      {
+        "name": "Trader",
+        "color": 7214497,
+        "hoist": false,
+        "mentionable": false,
+        "permissions": "0"
+      },
+      {
+        "name": "Developer",
+        "color": 7419530,
+        "hoist": false,
+        "mentionable": false,
+        "permissions": "1721826619162615"
+      },
+      {
+        "name": "☔️Ultra",
+        "color": 7341317,
+        "hoist": false,
+        "mentionable": false,
+        "permissions": "1721826619162615"
+      },
+      {
+        "name": "🔑Premium",
+        "color": 7419530,
+        "hoist": false,
+        "mentionable": false,
+        "permissions": "0"
+      },
+      {
+        "name": "Update Ping",
+        "color": 0,
+        "hoist": false,
+        "mentionable": false,
+        "permissions": "0"
+      },
+      {
+        "name": "🐞OG",
+        "color": 15277667,
+        "hoist": false,
+        "mentionable": false,
+        "permissions": "0"
+      },
+      {
+        "name": "Aura",
+        "color": 15844367,
+        "hoist": true,
+        "mentionable": false,
+        "permissions": "0"
+      },
+      {
+        "name": "Mini wave Ping",
+        "color": 5533306,
+        "hoist": false,
+        "mentionable": false,
+        "permissions": "0"
+      },
+      {
+        "name": "Solo Ping",
+        "color": 5533306,
+        "hoist": false,
+        "mentionable": false,
+        "permissions": "0"
+      },
+      {
+        "name": "🎉 Giveaway",
+        "color": 10181046,
+        "hoist": false,
+        "mentionable": false,
+        "permissions": "0"
+      },
+      {
+        "name": "Bot",
+        "color": 0,
+        "hoist": false,
+        "mentionable": false,
+        "permissions": "7337035389013425"
+      },
+      {
+        "name": "Admin",
+        "color": 11127295,
+        "hoist": true,
+        "mentionable": false,
+        "permissions": "8864262608912379"
+      },
+      {
+        "name": "Moderator",
+        "color": 131175,
+        "hoist": true,
+        "mentionable": false,
+        "permissions": "1099511628801"
+      },
+      {
+        "name": "V.I.P.",
+        "color": 12194836,
+        "hoist": true,
+        "mentionable": false,
+        "permissions": "0"
+      },
+      {
+        "name": "Member",
+        "color": 3066993,
+        "hoist": true,
+        "mentionable": true,
+        "permissions": "0"
+      },
+      {
+        "name": "Owner",
+        "color": 526601,
+        "hoist": false,
+        "mentionable": false,
+        "permissions": "8864258448162815"
+      }
+    ],
+    "categories": [
+      {
+        "name": "🔒",
+        "permissionOverwrites": []
+      },
+      {
+        "name": "Welcome 👋",
+        "permissionOverwrites": []
+      },
+      {
+        "name": "Important 🎉",
+        "permissionOverwrites": []
+      },
+      {
+        "name": "SUPPORT",
+        "permissionOverwrites": []
+      },
+      {
+        "name": "Chats 💭",
+        "permissionOverwrites": []
+      },
+      {
+        "name": "Wintrading 🎨",
+        "permissionOverwrites": []
+      },
+      {
+        "name": "Calls 📞",
+        "permissionOverwrites": []
+      }
+    ],
+    "channels": [
+      {
+        "name": "rules",
+        "type": 0,
+        "parentName": null,
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": [
+          {
+            "targetType": "everyone",
+            "targetName": "@everyone",
+            "allow": [],
+            "deny": [
+              "SendMessages"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Wintrading Solo Traders",
+        "type": 13,
+        "parentName": "Calls 📞",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 10000,
+        "permissionOverwrites": []
+      },
+      {
+        "name": "discord-support",
+        "type": 0,
+        "parentName": null,
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": [
+          {
+            "targetType": "everyone",
+            "targetName": "@everyone",
+            "allow": [],
+            "deny": [
+              "ViewChannel"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "🔐premium-chat",
+        "type": 0,
+        "parentName": "🔒",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": [
+          {
+            "targetType": "role",
+            "targetName": "Moderator",
+            "allow": [
+              "ViewChannel"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "everyone",
+            "targetName": "@everyone",
+            "allow": [],
+            "deny": [
+              "ViewChannel"
+            ]
+          },
+          {
+            "targetType": "role",
+            "targetName": "🔑Premium",
+            "allow": [
+              "ViewChannel"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Aura",
+            "allow": [
+              "ViewChannel"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "V.I.P.",
+            "allow": [
+              "ViewChannel"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "☔️Ultra",
+            "allow": [
+              "ViewChannel"
+            ],
+            "deny": []
+          }
+        ]
+      },
+      {
+        "name": "👑・Owner Call",
+        "type": 2,
+        "parentName": "Calls 📞",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": [
+          {
+            "targetType": "role",
+            "targetName": "Moderator",
+            "allow": [
+              "Stream",
+              "ViewChannel",
+              "Connect",
+              "Speak",
+              "UseVAD"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Head Moderator",
+            "allow": [
+              "Stream",
+              "ViewChannel",
+              "Connect",
+              "Speak",
+              "UseVAD"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Mini Wave Headmod",
+            "allow": [
+              "Stream",
+              "ViewChannel",
+              "Connect",
+              "Speak",
+              "UseVAD"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Owner",
+            "allow": [
+              "Stream",
+              "ViewChannel",
+              "Connect",
+              "Speak",
+              "UseVAD"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Mini Wave Mod",
+            "allow": [
+              "Stream",
+              "ViewChannel",
+              "Connect",
+              "Speak",
+              "UseVAD"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Admin",
+            "allow": [
+              "Stream",
+              "ViewChannel",
+              "Connect",
+              "Speak",
+              "UseVAD"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "everyone",
+            "targetName": "@everyone",
+            "allow": [],
+            "deny": [
+              "ViewChannel",
+              "Connect"
+            ]
+          },
+          {
+            "targetType": "role",
+            "targetName": "Support Team",
+            "allow": [
+              "Stream",
+              "ViewChannel",
+              "Connect",
+              "Speak",
+              "UseVAD"
+            ],
+            "deny": []
+          }
+        ]
+      },
+      {
+        "name": "👋・welcome",
+        "type": 0,
+        "parentName": "Welcome 👋",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": [
+          {
+            "targetType": "role",
+            "targetName": "Moderator",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Head Moderator",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Mini Wave Headmod",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "everyone",
+            "targetName": "@everyone",
+            "allow": [
+              "ViewChannel",
+              "ReadMessageHistory"
+            ],
+            "deny": [
+              "SendMessages"
+            ]
+          },
+          {
+            "targetType": "role",
+            "targetName": "Mini Wave Mod",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Admin",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Owner",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Support Team",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          }
+        ]
+      },
+      {
+        "name": "🌊・Mini Wave",
+        "type": 2,
+        "parentName": "Calls 📞",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": [
+          {
+            "targetType": "everyone",
+            "targetName": "@everyone",
+            "allow": [
+              "ViewChannel",
+              "Connect"
+            ],
+            "deny": [
+              "Speak"
+            ]
+          },
+          {
+            "targetType": "role",
+            "targetName": "Mini Wave Headmod",
+            "allow": [
+              "Stream",
+              "ViewChannel",
+              "Connect",
+              "Speak",
+              "MuteMembers",
+              "DeafenMembers",
+              "MoveMembers",
+              "UseVAD"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Mini Wave Mod",
+            "allow": [
+              "Stream",
+              "ViewChannel",
+              "Connect",
+              "Speak",
+              "UseVAD"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Head Moderator",
+            "allow": [
+              "ViewChannel",
+              "Connect"
+            ],
+            "deny": []
+          }
+        ]
+      },
+      {
+        "name": "🔊・Solo 1",
+        "type": 2,
+        "parentName": "Calls 📞",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 1,
+        "permissionOverwrites": []
+      },
+      {
+        "name": "🛫・goodbye",
+        "type": 0,
+        "parentName": "Welcome 👋",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": [
+          {
+            "targetType": "role",
+            "targetName": "Moderator",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "everyone",
+            "targetName": "@everyone",
+            "allow": [
+              "ViewChannel",
+              "ReadMessageHistory"
+            ],
+            "deny": [
+              "SendMessages"
+            ]
+          },
+          {
+            "targetType": "role",
+            "targetName": "Mini Wave Headmod",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Owner",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Mini Wave Mod",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Admin",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Head Moderator",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Support Team",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          }
+        ]
+      },
+      {
+        "name": "📖・rules",
+        "type": 0,
+        "parentName": "Welcome 👋",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": [
+          {
+            "targetType": "role",
+            "targetName": "Moderator",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "everyone",
+            "targetName": "@everyone",
+            "allow": [
+              "ViewChannel",
+              "ReadMessageHistory"
+            ],
+            "deny": [
+              "SendMessages"
+            ]
+          },
+          {
+            "targetType": "role",
+            "targetName": "Mini Wave Headmod",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Head Moderator",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Mini Wave Mod",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Admin",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Owner",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Support Team",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          }
+        ]
+      },
+      {
+        "name": "🔊・Solo 2",
+        "type": 2,
+        "parentName": "Calls 📞",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 1,
+        "permissionOverwrites": []
+      },
+      {
+        "name": "📩・invites",
+        "type": 0,
+        "parentName": "Welcome 👋",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": [
+          {
+            "targetType": "role",
+            "targetName": "Moderator",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Head Moderator",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Mini Wave Headmod",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Owner",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Mini Wave Mod",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Admin",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "everyone",
+            "targetName": "@everyone",
+            "allow": [
+              "ViewChannel",
+              "ReadMessageHistory"
+            ],
+            "deny": [
+              "SendMessages"
+            ]
+          },
+          {
+            "targetType": "role",
+            "targetName": "Support Team",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          }
+        ]
+      },
+      {
+        "name": "🔊・Solo 3",
+        "type": 2,
+        "parentName": "Calls 📞",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 1,
+        "permissionOverwrites": []
+      },
+      {
+        "name": "📣・updates",
+        "type": 5,
+        "parentName": "Important 🎉",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": [
+          {
+            "targetType": "role",
+            "targetName": "Head Moderator",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "everyone",
+            "targetName": "@everyone",
+            "allow": [
+              "ViewChannel",
+              "ReadMessageHistory"
+            ],
+            "deny": [
+              "SendMessages"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "🔊・Solo 4",
+        "type": 2,
+        "parentName": "Calls 📞",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 1,
+        "permissionOverwrites": []
+      },
+      {
+        "name": "🔊・Solo 5",
+        "type": 2,
+        "parentName": "Calls 📞",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 1,
+        "permissionOverwrites": []
+      },
+      {
+        "name": "🎉・announcements",
+        "type": 5,
+        "parentName": "Important 🎉",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": [
+          {
+            "targetType": "everyone",
+            "targetName": "@everyone",
+            "allow": [
+              "ViewChannel",
+              "ReadMessageHistory"
+            ],
+            "deny": [
+              "SendMessages"
+            ]
+          },
+          {
+            "targetType": "role",
+            "targetName": "Head Moderator",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          }
+        ]
+      },
+      {
+        "name": "✨・boosts",
+        "type": 0,
+        "parentName": "Important 🎉",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": [
+          {
+            "targetType": "role",
+            "targetName": "Moderator",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "everyone",
+            "targetName": "@everyone",
+            "allow": [
+              "ViewChannel",
+              "ReadMessageHistory"
+            ],
+            "deny": [
+              "SendMessages"
+            ]
+          },
+          {
+            "targetType": "role",
+            "targetName": "Mini Wave Headmod",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Owner",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Mini Wave Mod",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Admin",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Head Moderator",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Support Team",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          }
+        ]
+      },
+      {
+        "name": "🔊・Duo 1",
+        "type": 2,
+        "parentName": "Calls 📞",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 2,
+        "permissionOverwrites": []
+      },
+      {
+        "name": "🔊・Duo 2",
+        "type": 2,
+        "parentName": "Calls 📞",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 2,
+        "permissionOverwrites": []
+      },
+      {
+        "name": "🎊・giveaways",
+        "type": 5,
+        "parentName": "Important 🎉",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": [
+          {
+            "targetType": "everyone",
+            "targetName": "@everyone",
+            "allow": [],
+            "deny": [
+              "SendMessages"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "📘・role-system",
+        "type": 0,
+        "parentName": "Important 🎉",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": [
+          {
+            "targetType": "role",
+            "targetName": "Moderator",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "everyone",
+            "targetName": "@everyone",
+            "allow": [
+              "ViewChannel",
+              "ReadMessageHistory"
+            ],
+            "deny": [
+              "SendMessages"
+            ]
+          },
+          {
+            "targetType": "role",
+            "targetName": "Mini Wave Headmod",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Owner",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Mini Wave Mod",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Admin",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Head Moderator",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Support Team",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          }
+        ]
+      },
+      {
+        "name": "🔊・Duo 3",
+        "type": 2,
+        "parentName": "Calls 📞",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 2,
+        "permissionOverwrites": []
+      },
+      {
+        "name": "✅・proofs",
+        "type": 0,
+        "parentName": "Important 🎉",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": [
+          {
+            "targetType": "role",
+            "targetName": "Moderator",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "everyone",
+            "targetName": "@everyone",
+            "allow": [
+              "ViewChannel",
+              "ReadMessageHistory"
+            ],
+            "deny": [
+              "SendMessages"
+            ]
+          },
+          {
+            "targetType": "role",
+            "targetName": "Mini Wave Headmod",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Owner",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Mini Wave Mod",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Admin",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Head Moderator",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Support Team",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          }
+        ]
+      },
+      {
+        "name": "🔊・Duo 4",
+        "type": 2,
+        "parentName": "Calls 📞",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 2,
+        "permissionOverwrites": []
+      },
+      {
+        "name": "📝・invite-rewards",
+        "type": 0,
+        "parentName": "Important 🎉",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": [
+          {
+            "targetType": "role",
+            "targetName": "Moderator",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Owner",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Mini Wave Headmod",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "everyone",
+            "targetName": "@everyone",
+            "allow": [
+              "ViewChannel",
+              "ReadMessageHistory"
+            ],
+            "deny": [
+              "SendMessages"
+            ]
+          },
+          {
+            "targetType": "role",
+            "targetName": "Mini Wave Mod",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Admin",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Head Moderator",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Support Team",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          }
+        ]
+      },
+      {
+        "name": "🔊・Trio 1",
+        "type": 2,
+        "parentName": "Calls 📞",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 3,
+        "permissionOverwrites": []
+      },
+      {
+        "name": "🔊・Trio 2",
+        "type": 2,
+        "parentName": "Calls 📞",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 3,
+        "permissionOverwrites": []
+      },
+      {
+        "name": "🌸・reaction-roles",
+        "type": 0,
+        "parentName": "Important 🎉",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": [
+          {
+            "targetType": "role",
+            "targetName": "Moderator",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Head Moderator",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Mini Wave Headmod",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Owner",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Mini Wave Mod",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Admin",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "everyone",
+            "targetName": "@everyone",
+            "allow": [
+              "ViewChannel",
+              "ReadMessageHistory"
+            ],
+            "deny": [
+              "SendMessages"
+            ]
+          },
+          {
+            "targetType": "role",
+            "targetName": "Support Team",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          }
+        ]
+      },
+      {
+        "name": "🔊・Trio 3",
+        "type": 2,
+        "parentName": "Calls 📞",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 3,
+        "permissionOverwrites": []
+      },
+      {
+        "name": "🤝・collabs",
+        "type": 0,
+        "parentName": "Important 🎉",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": []
+      },
+      {
+        "name": "🛡️・staff-chat",
+        "type": 0,
+        "parentName": "Important 🎉",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": [
+          {
+            "targetType": "role",
+            "targetName": "Moderator",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Head Moderator",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Mini Wave Headmod",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Owner",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Mini Wave Mod",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Admin",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "everyone",
+            "targetName": "@everyone",
+            "allow": [],
+            "deny": [
+              "ViewChannel"
+            ]
+          },
+          {
+            "targetType": "role",
+            "targetName": "Support Team",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          }
+        ]
+      },
+      {
+        "name": "🔊・Squad 1",
+        "type": 2,
+        "parentName": "Calls 📞",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 4,
+        "permissionOverwrites": []
+      },
+      {
+        "name": "Prvt 1",
+        "type": 2,
+        "parentName": "Calls 📞",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 5,
+        "permissionOverwrites": [
+          {
+            "targetType": "everyone",
+            "targetName": "@everyone",
+            "allow": [
+              "ViewChannel"
+            ],
+            "deny": [
+              "Connect"
+            ]
+          },
+          {
+            "targetType": "role",
+            "targetName": "Prvt 1",
+            "allow": [
+              "Stream",
+              "ViewChannel",
+              "Connect",
+              "Speak",
+              "UseVAD"
+            ],
+            "deny": []
+          }
+        ]
+      },
+      {
+        "name": "🎟️・tickets",
+        "type": 5,
+        "parentName": "SUPPORT",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": []
+      },
+      {
+        "name": "🌍・global-chat",
+        "type": 0,
+        "parentName": "Chats 💭",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": []
+      },
+      {
+        "name": "Prvt 2",
+        "type": 2,
+        "parentName": "Calls 📞",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 5,
+        "permissionOverwrites": [
+          {
+            "targetType": "everyone",
+            "targetName": "@everyone",
+            "allow": [
+              "ViewChannel"
+            ],
+            "deny": [
+              "Connect"
+            ]
+          },
+          {
+            "targetType": "role",
+            "targetName": "Prvt 2",
+            "allow": [
+              "Stream",
+              "ViewChannel",
+              "Connect",
+              "Speak",
+              "UseVAD"
+            ],
+            "deny": []
+          }
+        ]
+      },
+      {
+        "name": "💻・commands",
+        "type": 0,
+        "parentName": "Chats 💭",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": []
+      },
+      {
+        "name": "Prvt 3",
+        "type": 2,
+        "parentName": "Calls 📞",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 5,
+        "permissionOverwrites": [
+          {
+            "targetType": "everyone",
+            "targetName": "@everyone",
+            "allow": [
+              "ViewChannel"
+            ],
+            "deny": [
+              "Connect"
+            ]
+          },
+          {
+            "targetType": "role",
+            "targetName": "Prvt 3",
+            "allow": [
+              "Stream",
+              "ViewChannel",
+              "Connect",
+              "Speak",
+              "UseVAD"
+            ],
+            "deny": []
+          }
+        ]
+      },
+      {
+        "name": "Prvt 4",
+        "type": 2,
+        "parentName": "Calls 📞",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 5,
+        "permissionOverwrites": [
+          {
+            "targetType": "everyone",
+            "targetName": "@everyone",
+            "allow": [
+              "ViewChannel"
+            ],
+            "deny": [
+              "Connect"
+            ]
+          },
+          {
+            "targetType": "role",
+            "targetName": "Prvt 4",
+            "allow": [
+              "Stream",
+              "ViewChannel",
+              "Connect",
+              "Speak",
+              "UseVAD"
+            ],
+            "deny": []
+          }
+        ]
+      },
+      {
+        "name": "🤡・full-focus",
+        "type": 0,
+        "parentName": "Chats 💭",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": []
+      },
+      {
+        "name": "Prvt 5",
+        "type": 2,
+        "parentName": "Calls 📞",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 5,
+        "permissionOverwrites": [
+          {
+            "targetType": "everyone",
+            "targetName": "@everyone",
+            "allow": [],
+            "deny": [
+              "ViewChannel",
+              "Connect"
+            ]
+          },
+          {
+            "targetType": "role",
+            "targetName": "Prvt 5",
+            "allow": [
+              "Stream",
+              "ViewChannel",
+              "Connect",
+              "Speak",
+              "UseVAD"
+            ],
+            "deny": []
+          }
+        ]
+      },
+      {
+        "name": "👑・owner-battlecards",
+        "type": 0,
+        "parentName": "Chats 💭",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": [
+          {
+            "targetType": "role",
+            "targetName": "Owner",
+            "allow": [],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Member",
+            "allow": [
+              "AddReactions",
+              "ViewChannel",
+              "ReadMessageHistory"
+            ],
+            "deny": [
+              "CreateInstantInvite",
+              "ManageChannels",
+              "SendMessages",
+              "SendTTSMessages",
+              "ManageMessages",
+              "EmbedLinks",
+              "AttachFiles",
+              "MentionEveryone",
+              "UseExternalEmojis",
+              "ManageRoles",
+              "ManageWebhooks",
+              "UseApplicationCommands",
+              "ManageThreads",
+              "CreatePublicThreads",
+              "CreatePrivateThreads",
+              "UseExternalStickers",
+              "SendMessagesInThreads",
+              "UseEmbeddedActivities",
+              "SendPolls",
+              "UseExternalApps",
+              "PinMessages",
+              "BypassSlowmode"
+            ]
+          },
+          {
+            "targetType": "everyone",
+            "targetName": "@everyone",
+            "allow": [],
+            "deny": [
+              "SendMessages"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "💎・famous-battlecards",
+        "type": 0,
+        "parentName": "Chats 💭",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": [
+          {
+            "targetType": "role",
+            "targetName": "Famous",
+            "allow": [
+              "SendMessages"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "everyone",
+            "targetName": "@everyone",
+            "allow": [],
+            "deny": [
+              "SendMessages"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "🔒・private-calls",
+        "type": 0,
+        "parentName": "Chats 💭",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": []
+      },
+      {
+        "name": "🔐・prvt-owners",
+        "type": 0,
+        "parentName": "Chats 💭",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": [
+          {
+            "targetType": "role",
+            "targetName": "Owner",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "role",
+            "targetName": "Head Moderator",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "everyone",
+            "targetName": "@everyone",
+            "allow": [
+              "ViewChannel"
+            ],
+            "deny": [
+              "SendMessages"
+            ]
+          },
+          {
+            "targetType": "role",
+            "targetName": "Admin",
+            "allow": [
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          }
+        ]
+      },
+      {
+        "name": "🎨・our-spray",
+        "type": 0,
+        "parentName": "Wintrading 🎨",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": [
+          {
+            "targetType": "everyone",
+            "targetName": "@everyone",
+            "allow": [],
+            "deny": [
+              "SendMessages"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "💍・exclusive-battlecards",
+        "type": 0,
+        "parentName": "Wintrading 🎨",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": [
+          {
+            "targetType": "role",
+            "targetName": "🔑Premium",
+            "allow": [
+              "SendMessages"
+            ],
+            "deny": []
+          },
+          {
+            "targetType": "everyone",
+            "targetName": "@everyone",
+            "allow": [],
+            "deny": [
+              "SendMessages"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "🖼️・member-battlecards",
+        "type": 0,
+        "parentName": "Wintrading 🎨",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": []
+      },
+      {
+        "name": "🗺️・map-rotation",
+        "type": 0,
+        "parentName": "Wintrading 🎨",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": []
+      },
+      {
+        "name": "❌・banned-brawlers",
+        "type": 0,
+        "parentName": "Wintrading 🎨",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": []
+      },
+      {
+        "name": "⏳・trading-times",
+        "type": 0,
+        "parentName": "Wintrading 🎨",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": []
+      },
+      {
+        "name": "🛒-shop",
+        "type": 5,
+        "parentName": "Important 🎉",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": []
+      },
+      {
+        "name": "📱accounts",
+        "type": 0,
+        "parentName": "SUPPORT",
+        "topic": null,
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": []
+      },
+      {
+        "name": "support-milan-sd",
+        "type": 0,
+        "parentName": "SUPPORT",
+        "topic": "ticket-owner:1490784402450546720;type:support;claimed:none",
+        "nsfw": false,
+        "userLimit": 0,
+        "permissionOverwrites": [
+          {
+            "targetType": "everyone",
+            "targetName": "@everyone",
+            "allow": [],
+            "deny": [
+              "ViewChannel"
+            ]
+          },
+          {
+            "targetType": "role",
+            "targetName": "Support Team",
+            "allow": [
+              "ManageChannels",
+              "ViewChannel",
+              "SendMessages",
+              "ReadMessageHistory"
+            ],
+            "deny": []
+          }
+        ]
+      }
+    ],
+    "config": {
+      "prefix": "!",
+      "supportRoleName": "Support Team",
+      "giveawayHostRoleName": "",
+      "ticketCategoryName": "SUPPORT",
+      "ticketPanelChannelName": "🎟️・tickets",
+      "welcomeChannelName": "👋・welcome",
+      "goodbyeChannelName": "🛫・goodbye",
+      "selfAssignableRoleNames": [
+        "Prvt 3",
+        "Prvt 4",
+        "Prvt 5",
+        "🎉 Giveaway",
+        "🐞OG",
+        "Mini wave Ping",
+        "Update Ping"
+      ],
+      "panelImageUrl": ""
+    }
+  }
+}
