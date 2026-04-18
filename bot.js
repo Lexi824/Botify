@@ -781,6 +781,15 @@ function buildEveryoneLockPermissions(channelType) {
   return permissions;
 }
 
+function getLockTargetRoles(guild) {
+  return guild.roles.cache.filter(
+    (role) =>
+      role.id !== guild.roles.everyone.id &&
+      !role.managed &&
+      !role.permissions.has(PermissionsBitField.Flags.Administrator)
+  );
+}
+
 async function applySecureMode(guild, actor) {
   const guildConfig = getGuildConfig(guild.id);
   if (guildConfig.secureMode) {
@@ -2079,6 +2088,54 @@ async function registerSlashCommands(readyClient) {
     )
     .addSubcommand((subcommand) =>
       subcommand
+        .setName("stats")
+        .setDescription("Show channel and role stats for one server.")
+        .addStringOption((option) =>
+          option
+            .setName("server")
+            .setDescription("Choose the server")
+            .setRequired(true)
+            .setAutocomplete(true)
+        )
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("tickets")
+        .setDescription("Show the ticket setup of one server.")
+        .addStringOption((option) =>
+          option
+            .setName("server")
+            .setDescription("Choose the server")
+            .setRequired(true)
+            .setAutocomplete(true)
+        )
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("panels")
+        .setDescription("Show saved panel channels and image settings.")
+        .addStringOption((option) =>
+          option
+            .setName("server")
+            .setDescription("Choose the server")
+            .setRequired(true)
+            .setAutocomplete(true)
+        )
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("calls")
+        .setDescription("Show voice and stage channels of one server.")
+        .addStringOption((option) =>
+          option
+            .setName("server")
+            .setDescription("Choose the server")
+            .setRequired(true)
+            .setAutocomplete(true)
+        )
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
         .setName("leave")
         .setDescription("Make the bot leave a server.")
         .addStringOption((option) =>
@@ -2464,6 +2521,13 @@ async function registerSlashCommands(readyClient) {
       .setDescription("Lock the current text channel for everyone.")
       .addStringOption((option) =>
         option.setName("reason").setDescription("Reason for the channel lock").setRequired(false)
+      )
+      .toJSON(),
+    new SlashCommandBuilder()
+      .setName("unlock")
+      .setDescription("Unlock the current text channel again.")
+      .addStringOption((option) =>
+        option.setName("reason").setDescription("Reason for the channel unlock").setRequired(false)
       )
       .toJSON(),
     new SlashCommandBuilder()
@@ -4173,13 +4237,13 @@ client.on(Events.InteractionCreate, async (interaction) => {
           channel.type === ChannelType.GuildAnnouncement
         ) {
           await channel.permissionOverwrites
-            .edit(targetGuild.roles.everyone, {
-              SendMessages: false,
-              SendMessagesInThreads: false,
-              CreatePublicThreads: false,
-              CreatePrivateThreads: false,
-            })
+            .edit(targetGuild.roles.everyone, buildEveryoneLockPermissions(channel.type))
             .catch(() => null);
+          for (const role of getLockTargetRoles(targetGuild).values()) {
+            await channel.permissionOverwrites
+              .edit(role, buildEveryoneLockPermissions(channel.type))
+              .catch(() => null);
+          }
           updatedTextChannels += 1;
         }
 
@@ -4188,13 +4252,13 @@ client.on(Events.InteractionCreate, async (interaction) => {
           (channel.type === ChannelType.GuildVoice || channel.type === ChannelType.GuildStageVoice)
         ) {
           await channel.permissionOverwrites
-            .edit(targetGuild.roles.everyone, {
-              Connect: false,
-              Speak: false,
-              Stream: false,
-              UseEmbeddedActivities: false,
-            })
+            .edit(targetGuild.roles.everyone, buildEveryoneLockPermissions(channel.type))
             .catch(() => null);
+          for (const role of getLockTargetRoles(targetGuild).values()) {
+            await channel.permissionOverwrites
+              .edit(role, buildEveryoneLockPermissions(channel.type))
+              .catch(() => null);
+          }
           updatedVoiceChannels += 1;
         }
       }
@@ -4463,6 +4527,183 @@ client.on(Events.InteractionCreate, async (interaction) => {
             .setTitle(`${targetGuild.name} Self-Roles`)
             .setDescription(lines.join("\n") || "No self-roles are configured on this server.")
             .setFooter({ text: `Botify Self-Roles • ${selfRoleIds.length} role(s)` }),
+        ],
+        flags: 64,
+      });
+      return;
+    }
+
+    if (subcommand === "stats") {
+      const guildId = interaction.options.getString("server");
+      const targetGuild = client.guilds.cache.get(guildId);
+
+      if (!targetGuild) {
+        await interaction.reply({
+          content: "I could not find that server.",
+          flags: 64,
+        });
+        return;
+      }
+
+      const stats = {
+        categories: 0,
+        text: 0,
+        announcements: 0,
+        voice: 0,
+        stage: 0,
+        forum: 0,
+      };
+
+      for (const channel of targetGuild.channels.cache.values()) {
+        if (channel.type === ChannelType.GuildCategory) stats.categories += 1;
+        if (channel.type === ChannelType.GuildText) stats.text += 1;
+        if (channel.type === ChannelType.GuildAnnouncement) stats.announcements += 1;
+        if (channel.type === ChannelType.GuildVoice) stats.voice += 1;
+        if (channel.type === ChannelType.GuildStageVoice) stats.stage += 1;
+        if (channel.type === ChannelType.GuildForum) stats.forum += 1;
+      }
+
+      await interaction.reply({
+        embeds: [
+          new EmbedBuilder()
+            .setColor(0x5865f2)
+            .setTitle(`${targetGuild.name} Stats`)
+            .addFields(
+              { name: "Members", value: `${targetGuild.memberCount}`, inline: true },
+              { name: "Roles", value: `${targetGuild.roles.cache.size}`, inline: true },
+              { name: "Categories", value: `${stats.categories}`, inline: true },
+              { name: "Text", value: `${stats.text}`, inline: true },
+              { name: "Announcements", value: `${stats.announcements}`, inline: true },
+              { name: "Voice", value: `${stats.voice}`, inline: true },
+              { name: "Stage", value: `${stats.stage}`, inline: true },
+              { name: "Forum", value: `${stats.forum}`, inline: true }
+            )
+            .setFooter({ text: "Botify Server Stats" }),
+        ],
+        flags: 64,
+      });
+      return;
+    }
+
+    if (subcommand === "tickets") {
+      const guildId = interaction.options.getString("server");
+      const targetGuild = client.guilds.cache.get(guildId);
+
+      if (!targetGuild) {
+        await interaction.reply({
+          content: "I could not find that server.",
+          flags: 64,
+        });
+        return;
+      }
+
+      const guildConfig = getGuildConfig(guildId);
+      const panelChannel = guildConfig.ticketPanelChannelId
+        ? targetGuild.channels.cache.get(guildConfig.ticketPanelChannelId)
+        : null;
+      const ticketCategory = guildConfig.ticketCategoryId
+        ? targetGuild.channels.cache.get(guildConfig.ticketCategoryId)
+        : null;
+      const supportRole = guildConfig.supportRoleId
+        ? targetGuild.roles.cache.get(guildConfig.supportRoleId)
+        : null;
+      const openTickets = targetGuild.channels.cache.filter(
+        (channel) =>
+          channel.type === ChannelType.GuildText &&
+          typeof channel.topic === "string" &&
+          channel.topic.includes("ticket-owner:")
+      ).size;
+
+      await interaction.reply({
+        embeds: [
+          new EmbedBuilder()
+            .setColor(0x5865f2)
+            .setTitle(`${targetGuild.name} Ticket Setup`)
+            .addFields(
+              { name: "Ticket Panel", value: panelChannel ? `#${panelChannel.name}` : "Not set", inline: true },
+              { name: "Ticket Category", value: ticketCategory ? `#${ticketCategory.name}` : "Not set", inline: true },
+              { name: "Support Role", value: supportRole ? `@${supportRole.name}` : "Not set", inline: true },
+              { name: "Open Tickets", value: `${openTickets}`, inline: true }
+            )
+            .setFooter({ text: "Botify Ticket Info" }),
+        ],
+        flags: 64,
+      });
+      return;
+    }
+
+    if (subcommand === "panels") {
+      const guildId = interaction.options.getString("server");
+      const targetGuild = client.guilds.cache.get(guildId);
+
+      if (!targetGuild) {
+        await interaction.reply({
+          content: "I could not find that server.",
+          flags: 64,
+        });
+        return;
+      }
+
+      const guildConfig = getGuildConfig(guildId);
+      const ticketPanel = guildConfig.ticketPanelChannelId
+        ? targetGuild.channels.cache.get(guildConfig.ticketPanelChannelId)
+        : null;
+      const welcomeChannel = guildConfig.welcomeChannelId
+        ? targetGuild.channels.cache.get(guildConfig.welcomeChannelId)
+        : null;
+      const goodbyeChannel = guildConfig.goodbyeChannelId
+        ? targetGuild.channels.cache.get(guildConfig.goodbyeChannelId)
+        : null;
+
+      await interaction.reply({
+        embeds: [
+          new EmbedBuilder()
+            .setColor(0x5865f2)
+            .setTitle(`${targetGuild.name} Panels`)
+            .addFields(
+              { name: "Ticket Panel", value: ticketPanel ? `#${ticketPanel.name}` : "Not set", inline: true },
+              { name: "Welcome Channel", value: welcomeChannel ? `#${welcomeChannel.name}` : "Not set", inline: true },
+              { name: "Goodbye Channel", value: goodbyeChannel ? `#${goodbyeChannel.name}` : "Not set", inline: true },
+              { name: "Panel Image URL", value: guildConfig.panelImageUrl || "Not set", inline: false }
+            )
+            .setFooter({ text: "Botify Panel Info" }),
+        ],
+        flags: 64,
+      });
+      return;
+    }
+
+    if (subcommand === "calls") {
+      const guildId = interaction.options.getString("server");
+      const targetGuild = client.guilds.cache.get(guildId);
+
+      if (!targetGuild) {
+        await interaction.reply({
+          content: "I could not find that server.",
+          flags: 64,
+        });
+        return;
+      }
+
+      const callLines = targetGuild.channels.cache
+        .filter(
+          (channel) =>
+            channel.type === ChannelType.GuildVoice || channel.type === ChannelType.GuildStageVoice
+        )
+        .sort((a, b) => a.rawPosition - b.rawPosition)
+        .map((channel) => {
+          const kind = channel.type === ChannelType.GuildStageVoice ? "Stage" : "Voice";
+          const limit = typeof channel.userLimit === "number" && channel.userLimit > 0 ? ` • limit ${channel.userLimit}` : "";
+          return `• **${channel.name}** - ${kind}${limit}`;
+        });
+
+      await interaction.reply({
+        embeds: [
+          new EmbedBuilder()
+            .setColor(0x5865f2)
+            .setTitle(`${targetGuild.name} Calls`)
+            .setDescription(callLines.join("\n") || "This server has no voice or stage channels.")
+            .setFooter({ text: `Botify Calls • ${callLines.length} call channel(s)` }),
         ],
         flags: 64,
       });
@@ -4778,12 +5019,58 @@ client.on(Events.InteractionCreate, async (interaction) => {
     }
 
     const reason = interaction.options.getString("reason") || "No reason provided";
-    await interaction.channel.permissionOverwrites.edit(interaction.guild.roles.everyone, {
-      SendMessages: false,
-    });
+    await interaction.channel.permissionOverwrites.edit(
+      interaction.guild.roles.everyone,
+      buildEveryoneLockPermissions(interaction.channel.type),
+      { reason: `Channel locked by ${interaction.user.tag}: ${reason}` }
+    );
+
+    for (const role of getLockTargetRoles(interaction.guild).values()) {
+      await interaction.channel.permissionOverwrites.edit(
+        role,
+        buildEveryoneLockPermissions(interaction.channel.type),
+        { reason: `Channel locked by ${interaction.user.tag}: ${reason}` }
+      );
+    }
 
     await interaction.reply({
       content: `Locked ${interaction.channel}.\nReason: **${reason}**`,
+      flags: 64,
+    });
+    return;
+  }
+
+  if (interaction.isChatInputCommand() && interaction.commandName === "unlock") {
+    if (!interaction.channel || !interaction.channel.isTextBased() || !("permissionOverwrites" in interaction.channel)) {
+      await interaction.reply({
+        content: "This command can only be used in a text channel.",
+        flags: 64,
+      });
+      return;
+    }
+
+    if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageChannels)) {
+      await interaction.reply({
+        content: "You need Manage Channels permission to use this command.",
+        flags: 64,
+      });
+      return;
+    }
+
+    const reason = interaction.options.getString("reason") || "No reason provided";
+
+    await interaction.channel.permissionOverwrites.delete(interaction.guild.roles.everyone, {
+      reason: `Channel unlocked by ${interaction.user.tag}: ${reason}`,
+    }).catch(() => null);
+
+    for (const role of getLockTargetRoles(interaction.guild).values()) {
+      await interaction.channel.permissionOverwrites.delete(role, {
+        reason: `Channel unlocked by ${interaction.user.tag}: ${reason}`,
+      }).catch(() => null);
+    }
+
+    await interaction.reply({
+      content: `Unlocked ${interaction.channel}.\nReason: **${reason}**`,
       flags: 64,
     });
     return;
