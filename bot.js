@@ -97,6 +97,9 @@ const GUILD_CONFIG_DEFAULTS = {
   selfAssignableRoleIds: [],
   giveawayHostRoleId: "",
   panelImageUrl: DEFAULT_PANEL_IMAGE_URL,
+  boostsAvailable: 0,
+  boostsPrice: "",
+  boostsNote: "",
   secureMode: false,
   secureSnapshot: null,
 };
@@ -1867,17 +1870,21 @@ function buildHelpEmbed(prefix) {
         `\`${prefix}panel\` / \`/panel\` / \`/ticket\``,
         `\`${prefix}queuepanel\` / \`/queuepanel\``,
         `\`/backup create\` / \`/backup use\` / \`/backup list\``,
-        `\`/server list\` / \`/server info\` / \`/server roleinfo\` / \`/server setup\` / \`/server lock\` / \`/server leave\``,
+        `\`/server list\` / \`/server info\` / \`/server roleinfo\` / \`/server channels\` / \`/server categories\``,
+        `\`/server config\` / \`/server selfroles\` / \`/server stats\` / \`/server tickets\` / \`/server panels\``,
+        `\`/server calls\` / \`/server setup\` / \`/server lock\` / \`/server leave\``,
         `\`${prefix}rolepanel\` / \`/rolepanel send\``,
         `\`${prefix}shop\` / \`/shop\``,
         `\`${prefix}shoppanel\` / \`/shoppanel\``,
+        `\`/buy item:Boosts quantity:<anzahl>\``,
+        `\`/boosts\``,
         `\`${prefix}selfrole @role\` / \`/selfrole\``,
         `\`${prefix}roleme @role\` / \`/roleme\``,
         `\`${prefix}tokens [@user]\` / \`/tokens\``,
         `\`${prefix}pay @user <amount>\` / \`/pay\``,
         `\`/myrole create\` / \`/myrole delete\``,
         `\`/mute\``,
-        `\`/lock\``,
+        `\`/lock\` / \`/unlock\``,
         "",
         "**Staff**",
         `\`${prefix}role @user @role\` / \`/role\``,
@@ -1898,6 +1905,7 @@ function buildHelpEmbed(prefix) {
         `\`${prefix}setsupportrole @role\` / \`/setsupportrole\``,
         `\`${prefix}setticketcategory <category>\` / \`/setticketcategory\``,
         `\`${prefix}setprefix <prefix>\` / \`/setprefix\``,
+        `\`/boosts available:<anzahl> price:<preis> note:<hinweis>\``,
         `\`/rolepanel setup\` / \`/rolepanel addrole\` / \`/rolepanel removerole\` / \`/rolepanel list\``,
         `\`/setup\``,
         `\`${prefix}delete confirm\` / \`/delete all\` / \`/delete channel\``,
@@ -1936,6 +1944,9 @@ function buildConfigEmbed(prefix, guildConfig, guild) {
   const goodbyeChannel = guildConfig.goodbyeChannelId
     ? guild.channels.cache.get(guildConfig.goodbyeChannelId)?.toString() || guildConfig.goodbyeChannelId
     : "Not set";
+  const boostsAvailable = Math.max(0, Number(guildConfig.boostsAvailable) || 0);
+  const boostsPrice = guildConfig.boostsPrice || "Not set";
+  const boostsNote = guildConfig.boostsNote || "Not set";
   const selfRoles = guildConfig.selfAssignableRoleIds.length
     ? guildConfig.selfAssignableRoleIds.map((id) => `<@&${id}>`).join(", ")
     : "None";
@@ -1952,6 +1963,9 @@ function buildConfigEmbed(prefix, guildConfig, guild) {
         `Panel Channel: ${panelChannel}`,
         `Welcome Channel: ${welcomeChannel}`,
         `Goodbye Channel: ${goodbyeChannel}`,
+        `Boost Stock: ${boostsAvailable}`,
+        `Boost Price: ${boostsPrice}`,
+        `Boost Notes: ${boostsNote}`,
         `Self Roles: ${selfRoles}`,
         `Panel Image URL: ${guildConfig.panelImageUrl || "Not set"}`,
       ].join("\n")
@@ -2238,6 +2252,47 @@ async function registerSlashCommands(readyClient) {
     new SlashCommandBuilder()
       .setName("shoppanel")
       .setDescription("Send the token shop panel in the current channel.")
+      .toJSON(),
+    new SlashCommandBuilder()
+      .setName("buy")
+      .setDescription("Create a purchase request for available boosts.")
+      .addStringOption((option) =>
+        option
+          .setName("item")
+          .setDescription("What you want to buy")
+          .setRequired(true)
+          .addChoices({ name: "Boosts", value: "boosts" })
+      )
+      .addIntegerOption((option) =>
+        option
+          .setName("quantity")
+          .setDescription("How many boosts you want to buy")
+          .setRequired(false)
+          .setMinValue(1)
+      )
+      .toJSON(),
+    new SlashCommandBuilder()
+      .setName("boosts")
+      .setDescription("Show or update the current boost stock.")
+      .addIntegerOption((option) =>
+        option
+          .setName("available")
+          .setDescription("How many boosts are currently available")
+          .setRequired(false)
+          .setMinValue(0)
+      )
+      .addStringOption((option) =>
+        option
+          .setName("price")
+          .setDescription("Price text like 4€ each or 10€ per 3 boosts")
+          .setRequired(false)
+      )
+      .addStringOption((option) =>
+        option
+          .setName("note")
+          .setDescription("Optional note, payment info, or purchase instructions")
+          .setRequired(false)
+      )
       .toJSON(),
     new SlashCommandBuilder()
       .setName("help")
@@ -3187,7 +3242,7 @@ client.on(Events.MessageCreate, async (message) => {
       console.error("Failed to answer AI DM:", error);
       await message.reply(
         error.message === "AI_TEMPORARILY_UNAVAILABLE_QUOTA"
-          ? "Die KI ist momentan nicht verfugbar. Bitte versuche es spater erneut.\n\nScript by Verk"
+          ? "Die KI ist momentan nicht verfügbar. Bitte versuche es später erneut.\n\nScript by Verk"
           : `DM-KI-Fehler: ${String(error.message || error).slice(0, 150)}\n\nScript by Verk`
       );
     }
@@ -3238,7 +3293,7 @@ client.on(Events.MessageCreate, async (message) => {
       console.error("Failed to answer !ai command:", error);
       await message.reply(
         error.message === "AI_TEMPORARILY_UNAVAILABLE_QUOTA"
-          ? "Die KI ist momentan nicht verfugbar. Bitte versuche es spater erneut.\n\nScript by Verk"
+          ? "Die KI ist momentan nicht verfügbar. Bitte versuche es später erneut.\n\nScript by Verk"
           : `KI-Fehler: ${String(error.message || error).slice(0, 150)}\n\nScript by Verk`
       );
     }
@@ -3840,6 +3895,121 @@ client.on(Events.InteractionCreate, async (interaction) => {
     await sendShopPanel(interaction.channel);
     await interaction.reply({
       content: "The shop panel has been sent.",
+      flags: 64,
+    });
+    return;
+  }
+
+  if (interaction.isChatInputCommand() && interaction.commandName === "boosts") {
+    const available = interaction.options.getInteger("available");
+    const price = interaction.options.getString("price");
+    const note = interaction.options.getString("note");
+    const wantsUpdate = available !== null || price !== null || note !== null;
+
+    if (wantsUpdate) {
+      if (!hasSetupAccess(interaction.member)) {
+        await interaction.reply({
+          content: "You need Administrator or Manage Server to update the boost stock.",
+          flags: 64,
+        });
+        return;
+      }
+
+      const nextConfig = updateGuildConfig(interaction.guild.id, (current) => ({
+        ...current,
+        boostsAvailable: available ?? current.boostsAvailable ?? 0,
+        boostsPrice: price ?? current.boostsPrice ?? "",
+        boostsNote: note ?? current.boostsNote ?? "",
+      }));
+
+      await interaction.reply({
+        embeds: [
+          new EmbedBuilder()
+            .setColor(0x6aa7ff)
+            .setTitle("Boost stock updated")
+            .setDescription(
+              [
+                `Available: **${Math.max(0, Number(nextConfig.boostsAvailable) || 0)}**`,
+                `Price: **${nextConfig.boostsPrice || "Not set"}**`,
+                `Note: **${nextConfig.boostsNote || "Not set"}**`,
+              ].join("\n")
+            ),
+        ],
+        flags: 64,
+      });
+      return;
+    }
+
+    const guildConfig = getGuildConfig(interaction.guild.id);
+    const stock = Math.max(0, Number(guildConfig.boostsAvailable) || 0);
+
+    await interaction.reply({
+      embeds: [
+        new EmbedBuilder()
+          .setColor(0x6aa7ff)
+          .setTitle(`${interaction.guild.name} Boost Stock`)
+          .setDescription(
+            [
+              `Available: **${stock}**`,
+              `Price: **${guildConfig.boostsPrice || "Not set"}**`,
+              `Note: **${guildConfig.boostsNote || "Not set"}**`,
+            ].join("\n")
+          )
+          .setFooter({ text: "Use /buy item:Boosts to create a purchase request." }),
+      ],
+      flags: 64,
+    });
+    return;
+  }
+
+  if (interaction.isChatInputCommand() && interaction.commandName === "buy") {
+    const item = interaction.options.getString("item", true);
+    const quantity = interaction.options.getInteger("quantity") || 1;
+    const guildConfig = getGuildConfig(interaction.guild.id);
+
+    if (item !== "boosts") {
+      await interaction.reply({
+        content: "That item is not available right now.",
+        flags: 64,
+      });
+      return;
+    }
+
+    const stock = Math.max(0, Number(guildConfig.boostsAvailable) || 0);
+    const supportRolePing = guildConfig.supportRoleId ? `<@&${guildConfig.supportRoleId}>` : "a staff member";
+
+    if (stock <= 0) {
+      await interaction.reply({
+        content: `Boosts are currently sold out. Please contact ${supportRolePing}.`,
+        flags: 64,
+      });
+      return;
+    }
+
+    if (quantity > stock) {
+      await interaction.reply({
+        content: `Only **${stock}** boost(s) are currently available.`,
+        flags: 64,
+      });
+      return;
+    }
+
+    await interaction.reply({
+      embeds: [
+        new EmbedBuilder()
+          .setColor(0xc8a46a)
+          .setTitle("Boost purchase request")
+          .setDescription(
+            [
+              `${interaction.user} wants to buy **${quantity}** boost(s).`,
+              `Available stock: **${stock}**`,
+              `Price: **${guildConfig.boostsPrice || "Ask staff"}**`,
+              `Instructions: **${guildConfig.boostsNote || `Please contact ${supportRolePing} to finish the payment.`}**`,
+              "",
+              "This command creates a purchase request only. Payment is handled manually by staff.",
+            ].join("\n")
+          ),
+      ],
       flags: 64,
     });
     return;
