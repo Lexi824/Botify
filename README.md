@@ -112,6 +112,33 @@ npm.cmd start
 - `?addshopitem @role <price>`
 - `?removeshopitem @role`
 
-## Storage
+## Notes
 
-- RTX 4080 High End PC used for this
+- Server config is stored in `data/guild-configs.json`
+- Giveaways are stored in `data/giveaways.json`
+- Tokens are stored in `data/tokens.json`
+- AI DM history is stored in `data/ai-dms.json`
+- Personal roles are stored in `data/my-roles.json`
+
+## Extra Commands
+
+- `/lock`
+- `/unlock`
+- `/delete all`
+- `/delete channel`
+- `/myrole create`
+- `/myrole delete`
+- `/server list`
+- `/server info`
+- `/server roleinfo`
+- `/server channels`
+- `/server categories`
+- `/server config`
+- `/server selfroles`
+- `/server stats`
+- `/server tickets`
+- `/server panels`
+- `/server calls`
+- `/server setup`
+- `/server lock`
+- `/server leave`
