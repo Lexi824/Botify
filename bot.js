@@ -100,9 +100,18 @@ const GUILD_CONFIG_DEFAULTS = {
   boostsAvailable: 0,
   boostsPrice: "",
   boostsNote: "",
+  premiumShopItems: [],
+  setupLayout: "wintrade",
   secureMode: false,
   secureSnapshot: null,
 };
+
+const SETUP_LAYOUT_CHOICES = [
+  { name: "Wintrade Layout", value: "wintrade" },
+  { name: "Normal Layout", value: "normal" },
+  { name: "Gaming Layout", value: "gaming" },
+  { name: "Stream Layout", value: "stream" },
+];
 
 const WINTRADE_SETUP_STRUCTURE = [
   {
@@ -189,6 +198,159 @@ const WINTRADE_SETUP_STRUCTURE = [
     ],
   },
 ];
+
+const SIMPLE_SETUP_PRESETS = {
+  normal: {
+    label: "Normal",
+    structure: [
+      {
+        key: "welcome",
+        name: "Welcome",
+        channels: [
+          { key: "welcome", type: ChannelType.GuildText, name: "welcome", readOnly: true },
+          { key: "goodbye", type: ChannelType.GuildText, name: "goodbye", readOnly: true },
+          { key: "rules", type: ChannelType.GuildText, name: "rules", readOnly: true },
+        ],
+      },
+      {
+        key: "info",
+        name: "Info",
+        channels: [
+          { key: "announcements", type: ChannelType.GuildText, name: "announcements", readOnly: true },
+          { key: "updates", type: ChannelType.GuildText, name: "updates", readOnly: true },
+          { key: "faq", type: ChannelType.GuildText, name: "faq", readOnly: true },
+        ],
+      },
+      {
+        key: "community",
+        name: "Community",
+        channels: [
+          { key: "chat", type: ChannelType.GuildText, name: "chat" },
+          { key: "media", type: ChannelType.GuildText, name: "media" },
+          { key: "commands", type: ChannelType.GuildText, name: "commands" },
+        ],
+      },
+      {
+        key: "support",
+        name: "Support",
+        channels: [
+          { key: "tickets", type: ChannelType.GuildText, name: "tickets", readOnly: true },
+          { key: "support-chat", type: ChannelType.GuildText, name: "support-chat", staffOnly: true },
+        ],
+      },
+      {
+        key: "calls",
+        name: "Calls",
+        channels: [
+          { key: "general", type: ChannelType.GuildVoice, name: "General" },
+          { key: "chill", type: ChannelType.GuildVoice, name: "Chill" },
+          { key: "support-call", type: ChannelType.GuildVoice, name: "Support Call", staffOnly: true },
+        ],
+      },
+    ],
+  },
+  gaming: {
+    label: "Gaming",
+    structure: [
+      {
+        key: "welcome",
+        name: "Lobby",
+        channels: [
+          { key: "welcome", type: ChannelType.GuildText, name: "welcome", readOnly: true },
+          { key: "goodbye", type: ChannelType.GuildText, name: "goodbye", readOnly: true },
+          { key: "rules", type: ChannelType.GuildText, name: "rules", readOnly: true },
+        ],
+      },
+      {
+        key: "news",
+        name: "News",
+        channels: [
+          { key: "announcements", type: ChannelType.GuildText, name: "announcements", readOnly: true },
+          { key: "patch-notes", type: ChannelType.GuildText, name: "patch-notes", readOnly: true },
+          { key: "giveaways", type: ChannelType.GuildText, name: "giveaways", readOnly: true },
+        ],
+      },
+      {
+        key: "gaming",
+        name: "Gaming",
+        channels: [
+          { key: "general-chat", type: ChannelType.GuildText, name: "general-chat" },
+          { key: "lfg", type: ChannelType.GuildText, name: "lfg" },
+          { key: "clips", type: ChannelType.GuildText, name: "clips" },
+          { key: "showcase", type: ChannelType.GuildText, name: "showcase" },
+        ],
+      },
+      {
+        key: "support",
+        name: "Support",
+        channels: [
+          { key: "tickets", type: ChannelType.GuildText, name: "tickets", readOnly: true },
+          { key: "staff-chat", type: ChannelType.GuildText, name: "staff-chat", staffOnly: true },
+        ],
+      },
+      {
+        key: "voice",
+        name: "Voice",
+        channels: [
+          { key: "squad-1", type: ChannelType.GuildVoice, name: "Squad 1", userLimit: 4 },
+          { key: "squad-2", type: ChannelType.GuildVoice, name: "Squad 2", userLimit: 4 },
+          { key: "duo-1", type: ChannelType.GuildVoice, name: "Duo 1", userLimit: 2 },
+          { key: "duo-2", type: ChannelType.GuildVoice, name: "Duo 2", userLimit: 2 },
+        ],
+      },
+    ],
+  },
+  stream: {
+    label: "Stream",
+    structure: [
+      {
+        key: "welcome",
+        name: "Welcome",
+        channels: [
+          { key: "welcome", type: ChannelType.GuildText, name: "welcome", readOnly: true },
+          { key: "goodbye", type: ChannelType.GuildText, name: "goodbye", readOnly: true },
+          { key: "rules", type: ChannelType.GuildText, name: "rules", readOnly: true },
+        ],
+      },
+      {
+        key: "creator-hub",
+        name: "Creator Hub",
+        channels: [
+          { key: "announcements", type: ChannelType.GuildText, name: "announcements", readOnly: true },
+          { key: "schedule", type: ChannelType.GuildText, name: "stream-schedule", readOnly: true },
+          { key: "clips", type: ChannelType.GuildText, name: "clips" },
+          { key: "submissions", type: ChannelType.GuildText, name: "submissions" },
+        ],
+      },
+      {
+        key: "community",
+        name: "Community",
+        channels: [
+          { key: "chat", type: ChannelType.GuildText, name: "chat" },
+          { key: "memes", type: ChannelType.GuildText, name: "memes" },
+          { key: "off-topic", type: ChannelType.GuildText, name: "off-topic" },
+        ],
+      },
+      {
+        key: "support",
+        name: "Support",
+        channels: [
+          { key: "tickets", type: ChannelType.GuildText, name: "tickets", readOnly: true },
+          { key: "mod-chat", type: ChannelType.GuildText, name: "mod-chat", staffOnly: true },
+        ],
+      },
+      {
+        key: "live",
+        name: "Live Rooms",
+        channels: [
+          { key: "stage", type: ChannelType.GuildVoice, name: "Main Stage" },
+          { key: "green-room", type: ChannelType.GuildVoice, name: "Green Room", staffOnly: true },
+          { key: "community-call", type: ChannelType.GuildVoice, name: "Community Call" },
+        ],
+      },
+    ],
+  },
+};
 
 const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.DirectMessages];
 if (ENABLE_MESSAGE_CONTENT) {
@@ -458,6 +620,9 @@ function getGuildConfig(guildId) {
     selfAssignableRoleIds: Array.isArray(guildConfig.selfAssignableRoleIds)
       ? guildConfig.selfAssignableRoleIds
       : [],
+    premiumShopItems: Array.isArray(guildConfig.premiumShopItems)
+      ? guildConfig.premiumShopItems
+      : [],
   };
 }
 
@@ -471,6 +636,26 @@ function updateGuildConfig(guildId, updater) {
   configs[guildId] = next;
   writeJson(CONFIG_FILE, configs);
   return next;
+}
+
+function getSetupLayoutChoice(layout) {
+  return SETUP_LAYOUT_CHOICES.find((choice) => choice.value === layout) || SETUP_LAYOUT_CHOICES[0];
+}
+
+function getPremiumShopItems(guildConfig) {
+  return Array.isArray(guildConfig.premiumShopItems) ? guildConfig.premiumShopItems : [];
+}
+
+function normalizePremiumShopItem(item, fallbackName = "Item") {
+  const name = String(item?.name || fallbackName).trim().slice(0, 80);
+  const stock = Math.max(0, Number(item?.stock) || 0);
+  return {
+    id: String(item?.id || slugify(name) || `item-${Date.now()}`).slice(0, 90),
+    name,
+    description: String(item?.description || "").trim().slice(0, 250),
+    price: String(item?.price || "Ask staff").trim().slice(0, 80),
+    stock,
+  };
 }
 
 function getValidSelfAssignableRoles(guild, guildConfig) {
@@ -1527,6 +1712,150 @@ async function runWintradeSetup(guild) {
   };
 }
 
+async function runSimpleLayoutSetup(guild, layoutKey) {
+  const preset = SIMPLE_SETUP_PRESETS[layoutKey];
+  if (!preset) {
+    throw new Error(`Unknown setup layout: ${layoutKey}`);
+  }
+
+  let createdCategories = 0;
+  let createdChannels = 0;
+  let createdRoles = 0;
+  let ticketsChannelId = "";
+  let ticketCategoryId = "";
+  let welcomeChannelId = "";
+  let goodbyeChannelId = "";
+
+  const staffRoles = {};
+  for (const roleName of ["Owner", "Admin", "Moderator", "Support Team"]) {
+    const { role, created } = await ensureRole(guild, roleName);
+    staffRoles[roleName] = role;
+    if (created) {
+      createdRoles += 1;
+    }
+  }
+
+  const staffAccessRoleIds = [
+    staffRoles.Owner?.id,
+    staffRoles.Admin?.id,
+    staffRoles.Moderator?.id,
+    staffRoles["Support Team"]?.id,
+  ].filter(Boolean);
+
+  for (const categoryConfig of preset.structure) {
+    const { channel: category, created } = await ensureCategory(guild, categoryConfig.name);
+    if (created) {
+      createdCategories += 1;
+    }
+
+    if (categoryConfig.key === "support") {
+      ticketCategoryId = category.id;
+    }
+
+    for (const channelConfig of categoryConfig.channels) {
+      let permissionOverwrites = channelConfig.permissionOverwrites;
+
+      if (channelConfig.readOnly) {
+        permissionOverwrites = buildVisibleReadOnlyOverwrites(guild, staffAccessRoleIds);
+      }
+
+      if (channelConfig.staffOnly) {
+        permissionOverwrites = [
+          {
+            id: guild.roles.everyone.id,
+            deny: [PermissionsBitField.Flags.ViewChannel],
+          },
+          ...staffAccessRoleIds.map((roleId) => ({
+            id: roleId,
+            allow: [
+              PermissionsBitField.Flags.ViewChannel,
+              PermissionsBitField.Flags.ReadMessageHistory,
+              PermissionsBitField.Flags.SendMessages,
+              PermissionsBitField.Flags.Connect,
+              PermissionsBitField.Flags.Speak,
+              PermissionsBitField.Flags.Stream,
+              PermissionsBitField.Flags.UseVAD,
+            ],
+          })),
+        ];
+      }
+
+      const result = await ensureGuildChannel(guild, category.id, {
+        ...channelConfig,
+        permissionOverwrites,
+      });
+      if (result.created) {
+        createdChannels += 1;
+      }
+
+      if (channelConfig.key === "welcome") {
+        welcomeChannelId = result.channel.id;
+      }
+
+      if (channelConfig.key === "goodbye") {
+        goodbyeChannelId = result.channel.id;
+      }
+
+      if (channelConfig.key === "tickets") {
+        ticketsChannelId = result.channel.id;
+      }
+    }
+  }
+
+  return {
+    createdCategories,
+    createdChannels,
+    createdRoles,
+    privateRoleIds: [],
+    supportRoleId: staffRoles["Support Team"]?.id || "",
+    ticketsChannelId,
+    ticketCategoryId,
+    welcomeChannelId,
+    goodbyeChannelId,
+    layoutKey,
+    layoutLabel: preset.label,
+  };
+}
+
+async function runGuildSetup(guild, layoutKey) {
+  if (layoutKey === "wintrade") {
+    const result = await runWintradeSetup(guild);
+    return {
+      ...result,
+      layoutKey,
+      layoutLabel: getSetupLayoutChoice(layoutKey).name.replace(" Layout", ""),
+    };
+  }
+
+  return runSimpleLayoutSetup(guild, layoutKey);
+}
+
+function buildPremiumShopEmbed(guild, guildConfig) {
+  const items = getPremiumShopItems(guildConfig).slice(0, 25);
+  const description = items.length
+    ? items
+        .map(
+          (item, index) =>
+            `\`${index + 1}.\` **${item.name}**\nPrice: **${item.price}** | Stock: **${item.stock}**${
+              item.description ? `\n${item.description}` : ""
+            }`
+        )
+        .join("\n\n")
+    : "No premium shop items have been configured yet.";
+
+  return new EmbedBuilder()
+    .setColor(0xc8a46a)
+    .setTitle(`${guild.name} Premium Shop`)
+    .setDescription(
+      [
+        "Use `/buy` to create a purchase request.",
+        "",
+        description,
+      ].join("\n")
+    )
+    .setFooter({ text: "Botify Shop | Payment is handled manually by staff" });
+}
+
 function isRoleManageable(guild, role) {
   const botMember = guild.members.me;
   if (!botMember || !role) {
@@ -1905,9 +2234,11 @@ function buildHelpEmbed(prefix) {
         `\`${prefix}setsupportrole @role\` / \`/setsupportrole\``,
         `\`${prefix}setticketcategory <category>\` / \`/setticketcategory\``,
         `\`${prefix}setprefix <prefix>\` / \`/setprefix\``,
+        `\`/shopadmin add\` / \`/shopadmin stock\` / \`/shopadmin remove\` / \`/shopadmin send\``,
+        `\`/buy\` / \`/boosts\``,
         `\`/boosts available:<anzahl> price:<preis> note:<hinweis>\``,
         `\`/rolepanel setup\` / \`/rolepanel addrole\` / \`/rolepanel removerole\` / \`/rolepanel list\``,
-        `\`/setup\``,
+        `\`/setup layout:<preset>\``,
         `\`${prefix}delete confirm\` / \`/delete all\` / \`/delete channel\``,
         `\`${prefix}addselfrole @role\` / \`/addselfrole\``,
         `\`${prefix}removeselfrole @role\` / \`/removeselfrole\``,
@@ -1947,6 +2278,7 @@ function buildConfigEmbed(prefix, guildConfig, guild) {
   const boostsAvailable = Math.max(0, Number(guildConfig.boostsAvailable) || 0);
   const boostsPrice = guildConfig.boostsPrice || "Not set";
   const boostsNote = guildConfig.boostsNote || "Not set";
+  const premiumShopItems = getPremiumShopItems(guildConfig);
   const selfRoles = guildConfig.selfAssignableRoleIds.length
     ? guildConfig.selfAssignableRoleIds.map((id) => `<@&${id}>`).join(", ")
     : "None";
@@ -1963,9 +2295,11 @@ function buildConfigEmbed(prefix, guildConfig, guild) {
         `Panel Channel: ${panelChannel}`,
         `Welcome Channel: ${welcomeChannel}`,
         `Goodbye Channel: ${goodbyeChannel}`,
+        `Setup Layout: ${getSetupLayoutChoice(guildConfig.setupLayout || "wintrade").name}`,
         `Boost Stock: ${boostsAvailable}`,
         `Boost Price: ${boostsPrice}`,
         `Boost Notes: ${boostsNote}`,
+        `Premium Shop Items: ${premiumShopItems.length}`,
         `Self Roles: ${selfRoles}`,
         `Panel Image URL: ${guildConfig.panelImageUrl || "Not set"}`,
       ].join("\n")
@@ -2013,7 +2347,7 @@ async function registerSlashCommands(readyClient) {
     .addSubcommand((subcommand) =>
       subcommand
         .setName("setup")
-        .setDescription("Run the Botify wintrade setup on a server.")
+        .setDescription("Run one of the Botify setup layouts on a server.")
         .addStringOption((option) =>
           option
             .setName("server")
@@ -2021,6 +2355,16 @@ async function registerSlashCommands(readyClient) {
             .setRequired(true)
             .setAutocomplete(true)
         )
+        .addStringOption((option) => {
+          option
+            .setName("layout")
+            .setDescription("Choose the setup layout")
+            .setRequired(false);
+          for (const choice of SETUP_LAYOUT_CHOICES) {
+            option.addChoices(choice);
+          }
+          return option;
+        })
     )
     .addSubcommand((subcommand) =>
       subcommand
@@ -2255,20 +2599,85 @@ async function registerSlashCommands(readyClient) {
       .toJSON(),
     new SlashCommandBuilder()
       .setName("buy")
-      .setDescription("Create a purchase request for available boosts.")
+      .setDescription("View the premium shop or create a purchase request.")
       .addStringOption((option) =>
         option
           .setName("item")
           .setDescription("What you want to buy")
-          .setRequired(true)
-          .addChoices({ name: "Boosts", value: "boosts" })
+          .setRequired(false)
+          .setAutocomplete(true)
       )
       .addIntegerOption((option) =>
         option
           .setName("quantity")
-          .setDescription("How many boosts you want to buy")
+          .setDescription("How many items you want to buy")
           .setRequired(false)
           .setMinValue(1)
+      )
+      .toJSON(),
+    new SlashCommandBuilder()
+      .setName("shopadmin")
+      .setDescription("Manage the premium real-money shop.")
+      .addSubcommand((subcommand) =>
+        subcommand
+          .setName("add")
+          .setDescription("Add a new premium shop item.")
+          .addStringOption((option) =>
+            option.setName("name").setDescription("Item name").setRequired(true)
+          )
+          .addStringOption((option) =>
+            option.setName("price").setDescription("Price text, e.g. 4 EUR").setRequired(true)
+          )
+          .addIntegerOption((option) =>
+            option
+              .setName("stock")
+              .setDescription("How many are available")
+              .setRequired(true)
+              .setMinValue(0)
+          )
+          .addStringOption((option) =>
+            option
+              .setName("description")
+              .setDescription("Optional short description")
+              .setRequired(false)
+          )
+      )
+      .addSubcommand((subcommand) =>
+        subcommand
+          .setName("remove")
+          .setDescription("Remove a premium shop item.")
+          .addStringOption((option) =>
+            option
+              .setName("item")
+              .setDescription("Choose the item")
+              .setRequired(true)
+              .setAutocomplete(true)
+          )
+      )
+      .addSubcommand((subcommand) =>
+        subcommand
+          .setName("stock")
+          .setDescription("Update the stock of a premium shop item.")
+          .addStringOption((option) =>
+            option
+              .setName("item")
+              .setDescription("Choose the item")
+              .setRequired(true)
+              .setAutocomplete(true)
+          )
+          .addIntegerOption((option) =>
+            option
+              .setName("available")
+              .setDescription("New available stock")
+              .setRequired(true)
+              .setMinValue(0)
+          )
+      )
+      .addSubcommand((subcommand) =>
+        subcommand.setName("list").setDescription("Show all premium shop items.")
+      )
+      .addSubcommand((subcommand) =>
+        subcommand.setName("send").setDescription("Send the premium shop panel in the current channel.")
       )
       .toJSON(),
     new SlashCommandBuilder()
@@ -2460,7 +2869,17 @@ async function registerSlashCommands(readyClient) {
       .toJSON(),
     new SlashCommandBuilder()
       .setName("setup")
-      .setDescription("Create the Brawl Stars wintrade server setup.")
+      .setDescription("Create one of the Botify server setup layouts.")
+      .addStringOption((option) => {
+        option
+          .setName("layout")
+          .setDescription("Choose the layout preset")
+          .setRequired(false);
+        for (const choice of SETUP_LAYOUT_CHOICES) {
+          option.addChoices(choice);
+        }
+        return option;
+      })
       .toJSON(),
     new SlashCommandBuilder()
       .setName("delete")
@@ -3725,6 +4144,38 @@ client.on(Events.InteractionCreate, async (interaction) => {
     return;
   }
 
+  if (interaction.isAutocomplete() && interaction.commandName === "buy") {
+    const focused = interaction.options.getFocused().toLowerCase();
+    const guildConfig = getGuildConfig(interaction.guild.id);
+    const choices = [
+      { name: `Boosts | ${Math.max(0, Number(guildConfig.boostsAvailable) || 0)} available`, value: "boosts" },
+      ...getPremiumShopItems(guildConfig).map((item) => ({
+        name: `${item.name} | ${item.price} | ${item.stock} available`,
+        value: item.id,
+      })),
+    ]
+      .filter((choice) => !focused || choice.name.toLowerCase().includes(focused))
+      .slice(0, 25);
+
+    await interaction.respond(choices);
+    return;
+  }
+
+  if (interaction.isAutocomplete() && interaction.commandName === "shopadmin") {
+    const focused = interaction.options.getFocused().toLowerCase();
+    const guildConfig = getGuildConfig(interaction.guild.id);
+    const choices = getPremiumShopItems(guildConfig)
+      .map((item) => ({
+        name: `${item.name} | ${item.price} | ${item.stock} available`,
+        value: item.id,
+      }))
+      .filter((choice) => !focused || choice.name.toLowerCase().includes(focused))
+      .slice(0, 25);
+
+    await interaction.respond(choices);
+    return;
+  }
+
   if (interaction.isAutocomplete() && interaction.commandName === "server") {
     if (!hasBotOwnerAccess(interaction.user.id)) {
       await interaction.respond([]);
@@ -3900,6 +4351,123 @@ client.on(Events.InteractionCreate, async (interaction) => {
     return;
   }
 
+  if (interaction.isChatInputCommand() && interaction.commandName === "shopadmin") {
+    if (!hasSetupAccess(interaction.member)) {
+      await interaction.reply({
+        content: "You need Administrator or Manage Server to manage the premium shop.",
+        flags: 64,
+      });
+      return;
+    }
+
+    const subcommand = interaction.options.getSubcommand();
+
+    if (subcommand === "add") {
+      const item = normalizePremiumShopItem({
+        name: interaction.options.getString("name", true),
+        price: interaction.options.getString("price", true),
+        stock: interaction.options.getInteger("stock", true),
+        description: interaction.options.getString("description") || "",
+      });
+
+      const guildConfig = updateGuildConfig(interaction.guild.id, (current) => {
+        const items = getPremiumShopItems(current).filter((entry) => entry.id !== item.id);
+        return {
+          ...current,
+          premiumShopItems: [...items, item],
+        };
+      });
+
+      await interaction.reply({
+        embeds: [buildPremiumShopEmbed(interaction.guild, guildConfig)],
+        flags: 64,
+      });
+      return;
+    }
+
+    if (subcommand === "remove") {
+      const itemId = interaction.options.getString("item", true);
+      const currentItems = getPremiumShopItems(getGuildConfig(interaction.guild.id));
+      const existingItem = currentItems.find((item) => item.id === itemId);
+
+      if (!existingItem) {
+        await interaction.reply({
+          content: "That premium shop item could not be found.",
+          flags: 64,
+        });
+        return;
+      }
+
+      const guildConfig = updateGuildConfig(interaction.guild.id, (current) => ({
+        ...current,
+        premiumShopItems: getPremiumShopItems(current).filter((item) => item.id !== itemId),
+      }));
+
+      await interaction.reply({
+        content: `Removed **${existingItem.name}** from the premium shop.`,
+        embeds: [buildPremiumShopEmbed(interaction.guild, guildConfig)],
+        flags: 64,
+      });
+      return;
+    }
+
+    if (subcommand === "stock") {
+      const itemId = interaction.options.getString("item", true);
+      const available = interaction.options.getInteger("available", true);
+      const currentItems = getPremiumShopItems(getGuildConfig(interaction.guild.id));
+      const existingItem = currentItems.find((item) => item.id === itemId);
+
+      if (!existingItem) {
+        await interaction.reply({
+          content: "That premium shop item could not be found.",
+          flags: 64,
+        });
+        return;
+      }
+
+      const guildConfig = updateGuildConfig(interaction.guild.id, (current) => ({
+        ...current,
+        premiumShopItems: getPremiumShopItems(current).map((item) =>
+          item.id === itemId ? { ...item, stock: Math.max(0, available) } : item
+        ),
+      }));
+
+      await interaction.reply({
+        content: `Updated **${existingItem.name}** stock to **${Math.max(0, available)}**.`,
+        embeds: [buildPremiumShopEmbed(interaction.guild, guildConfig)],
+        flags: 64,
+      });
+      return;
+    }
+
+    if (subcommand === "send") {
+      if (!interaction.channel || !interaction.channel.isTextBased()) {
+        await interaction.reply({
+          content: "This command can only be used in a text channel.",
+          flags: 64,
+        });
+        return;
+      }
+
+      const guildConfig = getGuildConfig(interaction.guild.id);
+      await interaction.channel.send({
+        embeds: [buildPremiumShopEmbed(interaction.guild, guildConfig)],
+      });
+      await interaction.reply({
+        content: "The premium shop panel has been sent.",
+        flags: 64,
+      });
+      return;
+    }
+
+    const guildConfig = getGuildConfig(interaction.guild.id);
+    await interaction.reply({
+      embeds: [buildPremiumShopEmbed(interaction.guild, guildConfig)],
+      flags: 64,
+    });
+    return;
+  }
+
   if (interaction.isChatInputCommand() && interaction.commandName === "boosts") {
     const available = interaction.options.getInteger("available");
     const price = interaction.options.getString("price");
@@ -3963,32 +4531,81 @@ client.on(Events.InteractionCreate, async (interaction) => {
   }
 
   if (interaction.isChatInputCommand() && interaction.commandName === "buy") {
-    const item = interaction.options.getString("item", true);
+    const item = interaction.options.getString("item");
     const quantity = interaction.options.getInteger("quantity") || 1;
     const guildConfig = getGuildConfig(interaction.guild.id);
+    const premiumItems = getPremiumShopItems(guildConfig);
 
-    if (item !== "boosts") {
+    if (!item) {
       await interaction.reply({
-        content: "That item is not available right now.",
+        embeds: [buildPremiumShopEmbed(interaction.guild, guildConfig)],
         flags: 64,
       });
       return;
     }
 
-    const stock = Math.max(0, Number(guildConfig.boostsAvailable) || 0);
     const supportRolePing = guildConfig.supportRoleId ? `<@&${guildConfig.supportRoleId}>` : "a staff member";
 
-    if (stock <= 0) {
+    if (item === "boosts") {
+      const stock = Math.max(0, Number(guildConfig.boostsAvailable) || 0);
+
+      if (stock <= 0) {
+        await interaction.reply({
+          content: `Boosts are currently sold out. Please contact ${supportRolePing}.`,
+          flags: 64,
+        });
+        return;
+      }
+
+      if (quantity > stock) {
+        await interaction.reply({
+          content: `Only **${stock}** boost(s) are currently available.`,
+          flags: 64,
+        });
+        return;
+      }
+
       await interaction.reply({
-        content: `Boosts are currently sold out. Please contact ${supportRolePing}.`,
+        embeds: [
+          new EmbedBuilder()
+            .setColor(0xc8a46a)
+            .setTitle("Boost purchase request")
+            .setDescription(
+              [
+                `${interaction.user} wants to buy **${quantity}** boost(s).`,
+                `Available stock: **${stock}**`,
+                `Price: **${guildConfig.boostsPrice || "Ask staff"}**`,
+                `Instructions: **${guildConfig.boostsNote || `Please contact ${supportRolePing} to finish the payment.`}**`,
+                "",
+                "This command creates a purchase request only. Payment is handled manually by staff.",
+              ].join("\n")
+            ),
+        ],
         flags: 64,
       });
       return;
     }
 
-    if (quantity > stock) {
+    const selectedItem = premiumItems.find((entry) => entry.id === item);
+    if (!selectedItem) {
       await interaction.reply({
-        content: `Only **${stock}** boost(s) are currently available.`,
+        content: "That premium shop item is not available right now.",
+        flags: 64,
+      });
+      return;
+    }
+
+    if (selectedItem.stock <= 0) {
+      await interaction.reply({
+        content: `**${selectedItem.name}** is currently sold out. Please contact ${supportRolePing}.`,
+        flags: 64,
+      });
+      return;
+    }
+
+    if (quantity > selectedItem.stock) {
+      await interaction.reply({
+        content: `Only **${selectedItem.stock}** of **${selectedItem.name}** are currently available.`,
         flags: 64,
       });
       return;
@@ -3998,16 +4615,19 @@ client.on(Events.InteractionCreate, async (interaction) => {
       embeds: [
         new EmbedBuilder()
           .setColor(0xc8a46a)
-          .setTitle("Boost purchase request")
+          .setTitle("Premium shop purchase request")
           .setDescription(
             [
-              `${interaction.user} wants to buy **${quantity}** boost(s).`,
-              `Available stock: **${stock}**`,
-              `Price: **${guildConfig.boostsPrice || "Ask staff"}**`,
-              `Instructions: **${guildConfig.boostsNote || `Please contact ${supportRolePing} to finish the payment.`}**`,
+              `${interaction.user} wants to buy **${quantity}x ${selectedItem.name}**.`,
+              `Available stock: **${selectedItem.stock}**`,
+              `Price: **${selectedItem.price}**`,
+              selectedItem.description ? `Info: **${selectedItem.description}**` : null,
+              `Instructions: **Please contact ${supportRolePing} to finish the payment.**`,
               "",
               "This command creates a purchase request only. Payment is handled manually by staff.",
-            ].join("\n")
+            ]
+              .filter(Boolean)
+              .join("\n")
           ),
       ],
       flags: 64,
@@ -4334,6 +4954,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
     if (subcommand === "setup") {
       const guildId = interaction.options.getString("server");
+      const layout = interaction.options.getString("layout") || "wintrade";
       const targetGuild = client.guilds.cache.get(guildId);
 
       if (!targetGuild) {
@@ -4345,11 +4966,11 @@ client.on(Events.InteractionCreate, async (interaction) => {
       }
 
       await interaction.reply({
-        content: `Creating the Botify Brawl Stars wintrade setup in **${targetGuild.name}**. This may take a moment...`,
+        content: `Creating the **${getSetupLayoutChoice(layout).name}** in **${targetGuild.name}**. This may take a moment...`,
         flags: 64,
       });
 
-      const result = await runWintradeSetup(targetGuild);
+      const result = await runGuildSetup(targetGuild, layout);
 
       updateGuildConfig(targetGuild.id, (current) => ({
         ...current,
@@ -4358,6 +4979,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
         ticketPanelChannelId: result.ticketsChannelId || current.ticketPanelChannelId,
         welcomeChannelId: result.welcomeChannelId || current.welcomeChannelId,
         goodbyeChannelId: result.goodbyeChannelId || current.goodbyeChannelId,
+        setupLayout: result.layoutKey || layout,
         selfAssignableRoleIds: Array.from(
           new Set([...(current.selfAssignableRoleIds || []), ...result.privateRoleIds])
         ),
@@ -4365,10 +4987,10 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
       await interaction.followUp({
         content: [
-          `Wintrade setup finished in **${targetGuild.name}**.`,
+          `${result.layoutLabel || getSetupLayoutChoice(layout).name} setup finished in **${targetGuild.name}**.`,
           `Categories created: **${result.createdCategories}**`,
           `Channels created: **${result.createdChannels}**`,
-          `Private roles created: **${result.createdRoles}**`,
+          `Roles created: **${result.createdRoles}**`,
           result.ticketsChannelId ? `Tickets channel saved: <#${result.ticketsChannelId}>` : null,
           result.privateRoleIds.length
             ? `Private call roles added to self-roles: **${result.privateRoleIds.length}**`
@@ -4949,12 +5571,14 @@ client.on(Events.InteractionCreate, async (interaction) => {
       return;
     }
 
+    const layout = interaction.options.getString("layout") || "wintrade";
+
     await interaction.reply({
-      content: "Creating the Botify Brawl Stars wintrade setup. This may take a moment...",
+      content: `Creating the **${getSetupLayoutChoice(layout).name}**. This may take a moment...`,
       flags: 64,
     });
 
-    const result = await runWintradeSetup(interaction.guild);
+    const result = await runGuildSetup(interaction.guild, layout);
 
     updateGuildConfig(interaction.guild.id, (current) => ({
       ...current,
@@ -4963,15 +5587,16 @@ client.on(Events.InteractionCreate, async (interaction) => {
       ticketPanelChannelId: result.ticketsChannelId || current.ticketPanelChannelId,
       welcomeChannelId: result.welcomeChannelId || current.welcomeChannelId,
       goodbyeChannelId: result.goodbyeChannelId || current.goodbyeChannelId,
+      setupLayout: result.layoutKey || layout,
       selfAssignableRoleIds: Array.from(new Set([...(current.selfAssignableRoleIds || []), ...result.privateRoleIds])),
     }));
 
     await interaction.followUp({
       content: [
-        "Wintrade setup finished.",
+        `${result.layoutLabel || getSetupLayoutChoice(layout).name} setup finished.`,
         `Categories created: **${result.createdCategories}**`,
         `Channels created: **${result.createdChannels}**`,
-        `Private roles created: **${result.createdRoles}**`,
+        `Roles created: **${result.createdRoles}**`,
         result.ticketsChannelId ? `Tickets channel saved: <#${result.ticketsChannelId}>` : null,
         result.privateRoleIds.length ? `Private call roles added to self-roles: **${result.privateRoleIds.length}**` : null,
       ]
