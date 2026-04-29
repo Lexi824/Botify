@@ -36,6 +36,9 @@ const ENABLE_GUILD_MEMBERS = process.env.ENABLE_GUILD_MEMBERS === "true";
 const BOT_OWNER_ID = process.env.BOT_OWNER_ID || "";
 const DEFAULT_PANEL_IMAGE_URL = process.env.PANEL_IMAGE_URL || "";
 const MINECRAFT_SERVER_ADDRESS = process.env.MINECRAFT_SERVER_ADDRESS || "185.838.938.104";
+const BOT_INVITE_LINK =
+  process.env.BOT_INVITE_LINK ||
+  "https://discord.com/oauth2/authorize?client_id=1481650013825273876&permissions=8&integration_type=0&scope=bot%20applications.commands";
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
 const OPENAI_MODEL = process.env.OPENAI_MODEL || "gpt-4.1-mini";
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || "";
@@ -102,6 +105,15 @@ const GUILD_CONFIG_DEFAULTS = {
   boostsNote: "",
   premiumShopItems: [],
   setupLayout: "wintrade",
+  antiraidEnabled: false,
+  antiraidLogChannelId: "",
+  antiraidJoinThreshold: 5,
+  antiraidJoinWindowSeconds: 15,
+  antiraidSpamThreshold: 6,
+  antiraidSpamWindowSeconds: 8,
+  antiraidMentionThreshold: 4,
+  antiraidAccountAgeHours: 24,
+  antiraidAutoSecure: true,
   secureMode: false,
   secureSnapshot: null,
 };
@@ -363,6 +375,8 @@ if (ENABLE_GUILD_MEMBERS) {
 const client = new Client({ intents, partials: [Partials.Channel] });
 const giveawayTimeouts = new Map();
 const giveawayLocks = new Map();
+const antiraidJoinTracker = new Map();
+const antiraidMessageTracker = new Map();
 
 ensureDataFiles();
 
@@ -656,6 +670,56 @@ function normalizePremiumShopItem(item, fallbackName = "Item") {
     price: String(item?.price || "Ask staff").trim().slice(0, 80),
     stock,
   };
+}
+
+function getBotInviteMarkdown() {
+  return `[Botify einladen](${BOT_INVITE_LINK})`;
+}
+
+function pruneTimestamps(list, windowMs) {
+  const now = Date.now();
+  return (list || []).filter((timestamp) => now - timestamp <= windowMs);
+}
+
+async function sendAntiraidLog(guild, payload) {
+  const guildConfig = getGuildConfig(guild.id);
+  if (!guildConfig.antiraidLogChannelId) {
+    return;
+  }
+
+  const channel = await guild.client.channels
+    .fetch(guildConfig.antiraidLogChannelId)
+    .catch(() => null);
+
+  if (!channel || !channel.isTextBased()) {
+    return;
+  }
+
+  await channel.send(payload).catch(() => null);
+}
+
+function buildAntiraidStatusEmbed(guild, guildConfig) {
+  return new EmbedBuilder()
+    .setColor(guildConfig.antiraidEnabled ? 0xe74c3c : 0x6aa7ff)
+    .setTitle(`${guild.name} Anti-Raid Status`)
+    .setDescription(
+      [
+        `Enabled: **${guildConfig.antiraidEnabled ? "Yes" : "No"}**`,
+        `Auto Secure: **${guildConfig.antiraidAutoSecure ? "Yes" : "No"}**`,
+        `Log Channel: **${
+          guildConfig.antiraidLogChannelId
+            ? guild.channels.cache.get(guildConfig.antiraidLogChannelId)?.toString() ||
+              guildConfig.antiraidLogChannelId
+            : "Not set"
+        }**`,
+        `Join Spike: **${guildConfig.antiraidJoinThreshold} joins / ${guildConfig.antiraidJoinWindowSeconds}s**`,
+        `Spam Limit: **${guildConfig.antiraidSpamThreshold} messages / ${guildConfig.antiraidSpamWindowSeconds}s**`,
+        `Mention Limit: **${guildConfig.antiraidMentionThreshold} mentions**`,
+        `New Account Flag: **under ${guildConfig.antiraidAccountAgeHours}h**`,
+        `Secure Mode: **${guildConfig.secureMode ? "Enabled" : "Disabled"}**`,
+      ].join("\n")
+    )
+    .setFooter({ text: "Botify Anti-Raid" });
 }
 
 function getValidSelfAssignableRoles(guild, guildConfig) {
@@ -1067,6 +1131,121 @@ async function restoreSecureMode(guild, actor) {
     ok: true,
     message: "Secure mode disabled. Saved channel permissions were restored.",
   };
+}
+
+async function evaluateAntiraidJoin(member) {
+  const guildConfig = getGuildConfig(member.guild.id);
+  if (!guildConfig.antiraidEnabled) {
+    return;
+  }
+
+  const joinWindowMs = Math.max(5, Number(guildConfig.antiraidJoinWindowSeconds) || 15) * 1000;
+  const joinThreshold = Math.max(2, Number(guildConfig.antiraidJoinThreshold) || 5);
+  const tracked = pruneTimestamps(antiraidJoinTracker.get(member.guild.id), joinWindowMs);
+  tracked.push(Date.now());
+  antiraidJoinTracker.set(member.guild.id, tracked);
+
+  const accountAgeHours =
+    Math.max(1, Number(guildConfig.antiraidAccountAgeHours) || 24) * 60 * 60 * 1000;
+  const isNewAccount = Date.now() - member.user.createdTimestamp < accountAgeHours;
+
+  if (isNewAccount) {
+    await sendAntiraidLog(member.guild, {
+      embeds: [
+        new EmbedBuilder()
+          .setColor(0xf1c40f)
+          .setTitle("New account joined")
+          .setDescription(
+            `${member.user.tag} joined and the account is newer than **${guildConfig.antiraidAccountAgeHours}h**.`
+          ),
+      ],
+    });
+  }
+
+  if (tracked.length < joinThreshold) {
+    return;
+  }
+
+  let secureMessage = "Join spike detected.";
+  if (guildConfig.antiraidAutoSecure && !guildConfig.secureMode) {
+    const result = await applySecureMode(member.guild, member.client.user);
+    secureMessage = result.message;
+  }
+
+  await sendAntiraidLog(member.guild, {
+    embeds: [
+      new EmbedBuilder()
+        .setColor(0xe74c3c)
+        .setTitle("Raid protection triggered")
+        .setDescription(
+          [
+            `Join spike detected in **${member.guild.name}**.`,
+            `Observed joins: **${tracked.length}** within **${guildConfig.antiraidJoinWindowSeconds}s**`,
+            `Action: **${guildConfig.antiraidAutoSecure ? "Secure mode attempted" : "Logged only"}**`,
+            secureMessage,
+          ].join("\n")
+        ),
+    ],
+  });
+}
+
+async function evaluateAntiraidMessage(message) {
+  if (!message.guild || !message.member) {
+    return;
+  }
+
+  const guildConfig = getGuildConfig(message.guild.id);
+  if (!guildConfig.antiraidEnabled || hasSetupAccess(message.member)) {
+    return;
+  }
+
+  const spamWindowMs = Math.max(3, Number(guildConfig.antiraidSpamWindowSeconds) || 8) * 1000;
+  const spamThreshold = Math.max(3, Number(guildConfig.antiraidSpamThreshold) || 6);
+  const mentionThreshold = Math.max(2, Number(guildConfig.antiraidMentionThreshold) || 4);
+  const key = `${message.guild.id}:${message.author.id}`;
+  const tracked = pruneTimestamps(antiraidMessageTracker.get(key), spamWindowMs);
+  tracked.push(Date.now());
+  antiraidMessageTracker.set(key, tracked);
+
+  const mentionCount =
+    message.mentions.users.size + message.mentions.roles.size + (message.mentions.everyone ? 1 : 0);
+  const hasTooManyMentions = mentionCount >= mentionThreshold;
+  const isSpamBurst = tracked.length >= spamThreshold;
+
+  if (!hasTooManyMentions && !isSpamBurst) {
+    return;
+  }
+
+  await message.delete().catch(() => null);
+
+  let actionText = "Message deleted";
+  if (message.member.moderatable) {
+    await message.member
+      .timeout(10 * 60 * 1000, "Anti-raid spam protection")
+      .catch(() => null);
+    actionText = "Message deleted and user timed out for 10 minutes";
+  }
+
+  if (guildConfig.antiraidAutoSecure && !guildConfig.secureMode) {
+    await applySecureMode(message.guild, message.client.user).catch(() => null);
+  }
+
+  await sendAntiraidLog(message.guild, {
+    embeds: [
+      new EmbedBuilder()
+        .setColor(0xe74c3c)
+        .setTitle("Spam protection triggered")
+        .setDescription(
+          [
+            `User: ${message.author.tag}`,
+            `Reason: **${hasTooManyMentions ? "Mention spam" : "Message burst"}**`,
+            `Messages in window: **${tracked.length}**`,
+            `Mentions: **${mentionCount}**`,
+            `Action: **${actionText}**`,
+          ].join("\n")
+        ),
+    ],
+  });
 }
 
 function findRole(guild, query) {
@@ -2212,6 +2391,8 @@ function buildHelpEmbed(prefix) {
         `\`${prefix}tokens [@user]\` / \`/tokens\``,
         `\`${prefix}pay @user <amount>\` / \`/pay\``,
         `\`/myrole create\` / \`/myrole delete\``,
+        `\`/invite\``,
+        `\`/antiraid status\` / \`/antiraid enable\` / \`/antiraid disable\` / \`/antiraid setup\``,
         `\`/mute\``,
         `\`/lock\` / \`/unlock\``,
         "",
@@ -2300,6 +2481,7 @@ function buildConfigEmbed(prefix, guildConfig, guild) {
         `Boost Price: ${boostsPrice}`,
         `Boost Notes: ${boostsNote}`,
         `Premium Shop Items: ${premiumShopItems.length}`,
+        `Anti-Raid: ${guildConfig.antiraidEnabled ? "Enabled" : "Disabled"}`,
         `Self Roles: ${selfRoles}`,
         `Panel Image URL: ${guildConfig.panelImageUrl || "Not set"}`,
       ].join("\n")
@@ -2310,6 +2492,12 @@ async function registerSlashCommands(readyClient) {
   const ipCommand = new SlashCommandBuilder()
     .setName("ip")
     .setDescription("Show the Minecraft server IP.")
+    .setDMPermission(true)
+    .toJSON();
+
+  const inviteCommand = new SlashCommandBuilder()
+    .setName("invite")
+    .setDescription("Show the Botify invite link.")
     .setDMPermission(true)
     .toJSON();
 
@@ -2707,7 +2895,81 @@ async function registerSlashCommands(readyClient) {
       .setName("help")
       .setDescription("Show the available bot commands.")
       .toJSON(),
+    new SlashCommandBuilder()
+      .setName("antiraid")
+      .setDescription("Configure and control the Botify anti-raid system.")
+      .addSubcommand((subcommand) =>
+        subcommand.setName("status").setDescription("Show the current anti-raid settings.")
+      )
+      .addSubcommand((subcommand) =>
+        subcommand.setName("enable").setDescription("Enable anti-raid protection.")
+      )
+      .addSubcommand((subcommand) =>
+        subcommand.setName("disable").setDescription("Disable anti-raid protection.")
+      )
+      .addSubcommand((subcommand) =>
+        subcommand
+          .setName("setup")
+          .setDescription("Update the anti-raid limits and log channel.")
+          .addChannelOption((option) =>
+            option
+              .setName("log_channel")
+              .setDescription("Where anti-raid alerts should be sent")
+              .addChannelTypes(ChannelType.GuildText)
+              .setRequired(false)
+          )
+          .addIntegerOption((option) =>
+            option
+              .setName("join_threshold")
+              .setDescription("How many joins trigger detection")
+              .setMinValue(2)
+              .setRequired(false)
+          )
+          .addIntegerOption((option) =>
+            option
+              .setName("join_window")
+              .setDescription("Join window in seconds")
+              .setMinValue(5)
+              .setRequired(false)
+          )
+          .addIntegerOption((option) =>
+            option
+              .setName("spam_threshold")
+              .setDescription("How many messages trigger spam detection")
+              .setMinValue(3)
+              .setRequired(false)
+          )
+          .addIntegerOption((option) =>
+            option
+              .setName("spam_window")
+              .setDescription("Spam window in seconds")
+              .setMinValue(3)
+              .setRequired(false)
+          )
+          .addIntegerOption((option) =>
+            option
+              .setName("mention_threshold")
+              .setDescription("How many mentions trigger protection")
+              .setMinValue(2)
+              .setRequired(false)
+          )
+          .addIntegerOption((option) =>
+            option
+              .setName("account_age_hours")
+              .setDescription("Flag accounts younger than this")
+              .setMinValue(1)
+              .setRequired(false)
+          )
+          .addBooleanOption((option) =>
+            option
+              .setName("auto_secure")
+              .setDescription("Automatically enable secure mode when triggered")
+              .setRequired(false)
+          )
+      )
+      .toJSON(),
     ipCommand,
+    inviteCommand,
     aiCommand,
     new SlashCommandBuilder()
       .setName("role")
@@ -3607,6 +3869,7 @@ client.once(Events.ClientReady, async (readyClient) => {
 
 client.on(Events.GuildMemberAdd, async (member) => {
   try {
+    await evaluateAntiraidJoin(member);
     await sendWelcomeMessage(member);
   } catch (error) {
     console.error("Failed to send welcome message:", error);
@@ -3624,6 +3887,14 @@ client.on(Events.GuildMemberRemove, async (member) => {
 client.on(Events.MessageCreate, async (message) => {
   if (!ENABLE_MESSAGE_CONTENT || message.author.bot) {
     return;
+  }
+
+  if (message.guild) {
+    try {
+      await evaluateAntiraidMessage(message);
+    } catch (error) {
+      console.error("Anti-raid message protection failed:", error);
+    }
   }
 
   if (!message.guild) {
@@ -4636,9 +4907,84 @@ client.on(Events.InteractionCreate, async (interaction) => {
   }
 
   if (interaction.isChatInputCommand() && interaction.commandName === "help") {
-    const guildConfig = getGuildConfig(interaction.guild.id);
+    const guildConfig = interaction.guild ? getGuildConfig(interaction.guild.id) : GUILD_CONFIG_DEFAULTS;
     await interaction.reply({
       embeds: [buildHelpEmbed(guildConfig.prefix)],
+      flags: 64,
+    });
+    return;
+  }
+
+  if (interaction.isChatInputCommand() && interaction.commandName === "antiraid") {
+    if (!hasSetupAccess(interaction.member)) {
+      await interaction.reply({
+        content: "You need Administrator or Manage Server to manage anti-raid.",
+        flags: 64,
+      });
+      return;
+    }
+
+    const subcommand = interaction.options.getSubcommand();
+    const guildConfig = getGuildConfig(interaction.guild.id);
+
+    if (subcommand === "status") {
+      await interaction.reply({
+        embeds: [buildAntiraidStatusEmbed(interaction.guild, guildConfig)],
+        flags: 64,
+      });
+      return;
+    }
+
+    if (subcommand === "enable") {
+      const nextConfig = updateGuildConfig(interaction.guild.id, (current) => ({
+        ...current,
+        antiraidEnabled: true,
+      }));
+      await interaction.reply({
+        content: "Anti-raid protection is now enabled.",
+        embeds: [buildAntiraidStatusEmbed(interaction.guild, nextConfig)],
+        flags: 64,
+      });
+      return;
+    }
+
+    if (subcommand === "disable") {
+      const nextConfig = updateGuildConfig(interaction.guild.id, (current) => ({
+        ...current,
+        antiraidEnabled: false,
+      }));
+      await interaction.reply({
+        content: "Anti-raid protection is now disabled.",
+        embeds: [buildAntiraidStatusEmbed(interaction.guild, nextConfig)],
+        flags: 64,
+      });
+      return;
+    }
+
+    const logChannel = interaction.options.getChannel("log_channel");
+    const joinThreshold = interaction.options.getInteger("join_threshold");
+    const joinWindow = interaction.options.getInteger("join_window");
+    const spamThreshold = interaction.options.getInteger("spam_threshold");
+    const spamWindow = interaction.options.getInteger("spam_window");
+    const mentionThreshold = interaction.options.getInteger("mention_threshold");
+    const accountAgeHours = interaction.options.getInteger("account_age_hours");
+    const autoSecure = interaction.options.getBoolean("auto_secure");
+
+    const nextConfig = updateGuildConfig(interaction.guild.id, (current) => ({
+      ...current,
+      antiraidLogChannelId: logChannel?.id ?? current.antiraidLogChannelId,
+      antiraidJoinThreshold: joinThreshold ?? current.antiraidJoinThreshold,
+      antiraidJoinWindowSeconds: joinWindow ?? current.antiraidJoinWindowSeconds,
+      antiraidSpamThreshold: spamThreshold ?? current.antiraidSpamThreshold,
+      antiraidSpamWindowSeconds: spamWindow ?? current.antiraidSpamWindowSeconds,
+      antiraidMentionThreshold: mentionThreshold ?? current.antiraidMentionThreshold,
+      antiraidAccountAgeHours: accountAgeHours ?? current.antiraidAccountAgeHours,
+      antiraidAutoSecure: autoSecure ?? current.antiraidAutoSecure,
+    }));
+
+    await interaction.reply({
+      content: "Anti-raid settings updated.",
+      embeds: [buildAntiraidStatusEmbed(interaction.guild, nextConfig)],
       flags: 64,
     });
     return;
@@ -4647,6 +4993,14 @@ client.on(Events.InteractionCreate, async (interaction) => {
   if (interaction.isChatInputCommand() && interaction.commandName === "ip") {
     await interaction.reply({
       content: `IP: \`${MINECRAFT_SERVER_ADDRESS}\``,
+      flags: 64,
+    });
+    return;
+  }
+
+  if (interaction.isChatInputCommand() && interaction.commandName === "invite") {
+    await interaction.reply({
+      content: `[Botify einladen](${BOT_INVITE_LINK})`,
       flags: 64,
     });
     return;
