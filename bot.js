@@ -935,6 +935,18 @@ function hasBanAccess(member) {
   );
 }
 
+function hasMessageWipeAccess(member) {
+  if (!member) {
+    return false;
+  }
+
+  return (
+    member.permissions.has(PermissionsBitField.Flags.Administrator) ||
+    member.permissions.has(PermissionsBitField.Flags.ManageMessages) ||
+    member.permissions.has(PermissionsBitField.Flags.ManageChannels)
+  );
+}
+
 function hasBotOwnerAccess(userId) {
   if (!userId) {
     return false;
@@ -2420,6 +2432,7 @@ function buildHelpEmbed(prefix) {
         `\`/boosts available:<anzahl> price:<preis> note:<hinweis>\``,
         `\`/rolepanel setup\` / \`/rolepanel addrole\` / \`/rolepanel removerole\` / \`/rolepanel list\``,
         `\`/setup layout:<preset>\``,
+        `\`/wipe text confirm:true\``,
         `\`${prefix}delete confirm\` / \`/delete all\` / \`/delete channel\``,
         `\`${prefix}addselfrole @role\` / \`/addselfrole\``,
         `\`${prefix}removeselfrole @role\` / \`/removeselfrole\``,
@@ -3167,6 +3180,21 @@ async function registerSlashCommands(readyClient) {
       )
       .toJSON(),
     new SlashCommandBuilder()
+      .setName("wipe")
+      .setDescription("Delete messages in this server.")
+      .addSubcommand((subcommand) =>
+        subcommand
+          .setName("text")
+          .setDescription("Delete all non-pinned messages in the current text channel.")
+          .addBooleanOption((option) =>
+            option
+              .setName("confirm")
+              .setDescription("Must be true to continue")
+              .setRequired(true)
+          )
+      )
+      .toJSON(),
+    new SlashCommandBuilder()
       .setName("addselfrole")
       .setDescription("Allow a role to be self-assigned.")
       .addRoleOption((option) =>
@@ -3327,6 +3355,47 @@ async function sendQueuePanel(targetChannel) {
     embeds: [buildQueueEmbed(targetChannel.guild)],
     components: buildQueueComponents(),
   });
+}
+
+async function wipeTextChannelMessages(channel) {
+  let deletedCount = 0;
+  let oldestReached = false;
+
+  while (true) {
+    const fetched = await channel.messages.fetch({ limit: 100 });
+    const deletable = fetched.filter((message) => !message.pinned);
+
+    if (!deletable.size) {
+      break;
+    }
+
+    const bulkEligible = deletable.filter(
+      (message) => Date.now() - message.createdTimestamp < 14 * 24 * 60 * 60 * 1000
+    );
+    const olderMessages = deletable.filter(
+      (message) => Date.now() - message.createdTimestamp >= 14 * 24 * 60 * 60 * 1000
+    );
+
+    if (bulkEligible.size) {
+      const bulkDeleted = await channel.bulkDelete(bulkEligible, true).catch(() => null);
+      deletedCount += bulkDeleted?.size || 0;
+    }
+
+    for (const oldMessage of olderMessages.values()) {
+      const deleted = await oldMessage.delete().then(() => true).catch(() => false);
+      if (deleted) {
+        deletedCount += 1;
+      } else {
+        oldestReached = true;
+      }
+    }
+
+    if (deletable.size < 100 || (!bulkEligible.size && !olderMessages.size)) {
+      break;
+    }
+  }
+
+  return { deletedCount, oldestReached };
 }
 
 async function findUserTickets(guild, userId) {
@@ -6007,6 +6076,47 @@ client.on(Events.InteractionCreate, async (interaction) => {
     });
 
     await deleteAllGuildChannels(interaction.guild);
+    return;
+  }
+
+  if (interaction.isChatInputCommand() && interaction.commandName === "wipe") {
+    if (!hasMessageWipeAccess(interaction.member)) {
+      await interaction.reply({
+        content: "You need Administrator, Manage Messages, or Manage Channels to do that.",
+        flags: 64,
+      });
+      return;
+    }
+
+    if (!interaction.channel || !interaction.channel.isTextBased() || !("messages" in interaction.channel)) {
+      await interaction.reply({
+        content: "This command only works in a normal text channel.",
+        flags: 64,
+      });
+      return;
+    }
+
+    const confirm = interaction.options.getBoolean("confirm", true);
+    if (!confirm) {
+      await interaction.reply({
+        content: "Set `confirm` to `true` to wipe the current text channel.",
+        flags: 64,
+      });
+      return;
+    }
+
+    await interaction.reply({
+      content: `Wiping messages in **#${interaction.channel.name}**...`,
+      flags: 64,
+    });
+
+    const result = await wipeTextChannelMessages(interaction.channel);
+    await interaction.followUp({
+      content: result.oldestReached
+        ? `Done. Deleted **${result.deletedCount}** message(s). Some very old messages may have stayed behind.`
+        : `Done. Deleted **${result.deletedCount}** message(s).`,
+      flags: 64,
+    });
     return;
   }
 
